@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discussions
+    url: https://github.com/moinsen-dev/vibalos/discussions
+    about: General questions, ideas, and conversation — better suited than issues.
+  - name: Email Ulrich directly
+    url: mailto:business@moinsen.dev
+    about: License-related issues, refunds, anything you'd rather not post publicly.
