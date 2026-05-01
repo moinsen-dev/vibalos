@@ -69,7 +69,14 @@ This page describes intent. To verify:
 
 ## Compliance
 
-If you're evaluating Vibalos for a regulated environment (EU GDPR Art. 28, EU AI Act Art. 50, US HIPAA), the maintainer is happy to provide a written one-pager describing the data flow above for your auditor. Email `business@moinsen.dev`.
+A complete data-flow map for compliance reviews lives at [vibalos.moinsen.dev/datenfluss](https://vibalos.moinsen.dev/datenfluss) (DE) / [vibalos.moinsen.dev/en/data-flow](https://vibalos.moinsen.dev/en/data-flow) (EN). It includes:
+
+- The full diagram (where every byte goes)
+- A GDPR Art. 28 statement (no DPA required — Vibalos doesn't process data on behalf of a controller)
+- An EU AI Act Art. 50 statement (Vibalos is an interface to local AI, not a model provider — Art. 50 obligations fall on Ollama/Apple/etc.)
+- A "verify it yourself" walkthrough using Activity Monitor and Little Snitch
+
+If you need a written one-pager addressed to your DPO or auditor, email `business@moinsen.dev` — happy to produce one.
 
 ## Changes to this page
 
