@@ -33,6 +33,8 @@ except ImportError:
 
 SCHEMA_VERSION = 4
 ROOT = Path(__file__).resolve().parent
+CORPUS_DIR = ROOT / "corpus"
+CORPUS_OUTPUT_FILE = ROOT / "corpus.json"
 CATEGORIES_FILE = ROOT / "categories.yaml"
 PRESETS_DIR = ROOT / "presets"
 OUTPUT_FILE = ROOT / "catalog.json"
@@ -186,6 +188,40 @@ def _coerce_str(value, default: str) -> str:
     return str(value)
 
 
+def load_corpus_map(known_slugs: set[str]) -> dict[str, list[str]]:
+    """Walk corpus/<cat>/<slug>.txt files and build a map of preset
+    slug → list of test inputs. Each file: blocks separated by blank
+    lines, lines starting with '#' are comments and skipped."""
+    out: dict[str, list[str]] = {}
+    if not CORPUS_DIR.exists():
+        return out
+    for cat_dir in sorted(CORPUS_DIR.iterdir()):
+        if not cat_dir.is_dir():
+            continue
+        for txt in sorted(cat_dir.glob("*.txt")):
+            slug = txt.stem
+            if slug not in known_slugs:
+                # Don't fail — just warn so contributors can spot orphans.
+                print(f"warning: corpus/{cat_dir.name}/{txt.name} has no matching preset", file=sys.stderr)
+            blocks: list[str] = []
+            current: list[str] = []
+            for line in txt.read_text().splitlines():
+                if line.lstrip().startswith("#"):
+                    continue
+                if not line.strip():
+                    if current:
+                        blocks.append("\n".join(current).strip())
+                        current = []
+                    continue
+                current.append(line)
+            if current:
+                blocks.append("\n".join(current).strip())
+            blocks = [b for b in blocks if b]
+            if blocks:
+                out[slug] = blocks
+    return out
+
+
 def _normalize_engines(engines: list, preset_file: Path) -> list[dict]:
     if not isinstance(engines, list):
         fail(f"{preset_file}: recommendedEngines must be a list")
@@ -223,12 +259,45 @@ def main() -> None:
         "presets": presets,
     }
 
+    # Build a slug→name map from the YAML files so we can emit a
+    # name-keyed corpus.json the app can look up directly.
+    presets_root = ROOT / "presets"
+    slug_to_name: dict[str, str] = {}
+    for cat_dir in presets_root.iterdir():
+        if not cat_dir.is_dir():
+            continue
+        for yaml_file in cat_dir.glob("*.yaml"):
+            try:
+                fm, _ = split_frontmatter(yaml_file.read_text())
+            except Exception:
+                continue
+            name = fm.get("name")
+            if isinstance(name, str):
+                slug_to_name[yaml_file.stem] = name
+
+    corpus_by_slug = load_corpus_map(set(slug_to_name.keys()))
+    corpus_by_name = {
+        slug_to_name[slug]: inputs
+        for slug, inputs in corpus_by_slug.items()
+        if slug in slug_to_name
+    }
+    total_inputs = sum(len(v) for v in corpus_by_name.values())
+
     if args.check:
-        print(f"OK — {len(categories)} categories, {len(presets)} presets")
+        print(
+            f"OK — {len(categories)} categories, {len(presets)} presets, "
+            f"{len(corpus_by_name)} corpus files, {total_inputs} inputs"
+        )
         return
 
     OUTPUT_FILE.write_text(json.dumps(catalog, indent=2, ensure_ascii=False) + "\n")
     print(f"wrote {OUTPUT_FILE.relative_to(ROOT.parent)} — {len(categories)} categories, {len(presets)} presets")
+
+    CORPUS_OUTPUT_FILE.write_text(json.dumps(corpus_by_name, indent=2, ensure_ascii=False) + "\n")
+    print(
+        f"wrote {CORPUS_OUTPUT_FILE.relative_to(ROOT.parent)} — "
+        f"{len(corpus_by_name)} presets, {total_inputs} inputs"
+    )
 
 
 if __name__ == "__main__":

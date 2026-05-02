@@ -1,0 +1,164 @@
+{
+  "Code Review Comment": [
+    "```swift\nfunc loadUser(id: String) async -> User? {\n    let url = URL(string: \"https://api.example.com/users/\\(id)\")!\n    let (data, _) = try! await URLSession.shared.data(from: url)\n    return try? JSONDecoder().decode(User.self, from: data)\n}\n```",
+    "```python\ndef process_orders(orders):\n    for order in orders:\n        if order.status == \"pending\":\n            send_email(order.user_email)\n            order.status = \"processed\"\n            db.save(order)\n```",
+    "function getUserAge(user) { return user.age; }"
+  ],
+  "Explain Code": [
+    "func debounce(_ interval: TimeInterval, action: @escaping () -> Void) -> () -> Void {\n    var workItem: DispatchWorkItem?\n    return {\n        workItem?.cancel()\n        let item = DispatchWorkItem(block: action)\n        workItem = item\n        DispatchQueue.main.asyncAfter(deadline: .now() + interval, execute: item)\n    }\n}",
+    "def memoize(fn):\n    cache = {}\n    def wrapper(*args, **kwargs):\n        key = (args, frozenset(kwargs.items()))\n        if key not in cache:\n            cache[key] = fn(*args, **kwargs)\n        return cache[key]\n    return wrapper",
+    "x = y + 1"
+  ],
+  "Generate Test Skeleton": [
+    "func divideEvenly(numerator: Int, denominator: Int) throws -> Int {\n    guard denominator != 0 else { throw MathError.divisionByZero }\n    guard numerator % denominator == 0 else { throw MathError.notEvenlyDivisible }\n    return numerator / denominator\n}",
+    "def parse_iso_duration(text: str) -> int:\n    \"\"\"Parse \"PT1H30M\" style ISO 8601 durations and return total seconds.\"\"\"\n    if not text.startswith(\"PT\"):\n        raise ValueError(f\"Not an ISO duration: {text!r}\")\n    return total_seconds",
+    "const noop = () => {};"
+  ],
+  "Write Commit Message": [
+    "Hab heute den Login-Bug gefixt, der bei leeren Passwörtern den Server gecrasht hat. Validation rein, error response anstatt 500. Plus ein Test der den Fall abdeckt.",
+    "refactored the user notification service to support multi-channel delivery (push + email + in-app), added webhook adapter for Slack workspaces, removed dead code from old SMS provider integration",
+    "bumped lib version"
+  ],
+  "Write PR Description": [
+    "Commits in this branch:\n- add OllamaStreamParser\n- wire OllamaClient.generateStream(..) using URLSession.bytes\n- update PromptRenderer tests for streaming path\n- bump test count from 142 → 148",
+    "This PR migrates our authentication middleware from express-session to a custom JWT-based solution. We move from server-side sessions to stateless tokens to scale across multiple regions, fix the cookie-domain bug that was breaking single sign-on across subdomains, and remove the Redis session-store dependency. New refresh-token rotation logic with a sliding 7-day window. Existing endpoints are unchanged.",
+    "added a button"
+  ],
+  "Postmortem Polish": [
+    "Outage 2026-04-18: API war 47 Minuten down, von 14:03 bis 14:50. Marcus hat gegen 13:55 ein Deployment angestoßen, das eine alte Version der Auth-Library mitgebracht hat — niemand hat den Lockfile-Diff im Review angesehen. 14:03 fingen die ersten 500er an. Niemand hat reagiert weil der Slack-Channel auf \"muted\" stand bei Anna, die On-Call hatte. Marcus hat den Outage erst um 14:30 gesehen als Kunden sich bei Sales gemeldet haben. Rollback dauerte weitere 20 Min weil unser Rollback-Script kaputt war, hat ihn niemand mehr getestet seit Q1. Wir müssen den Lockfile-Review wieder verpflichtend machen, das Slack-Mute-Verhalten klären, und das Rollback-Script in CI testen.",
+    "Incident 2026-04-22: search latency P99 climbed from 80ms to 4500ms over a 6-hour window starting around 02:00 UTC. The on-call engineer didn't notice because the alert threshold was set too high (P99 < 5s) — by the time it fired, customers in EMEA had already filed 11 tickets. Root cause: a gradual fragmentation of our Elasticsearch index due to a missed daily reindex job that has been silently failing for the past 3 weeks. Contributing: our cron alert pipeline was changed two months ago and the failure notifications were going to a deprecated Slack channel. Remediation: tightened the latency alert to P99 < 500ms, fixed the reindex job, audited all cron alerts for deprecated routes, and added a synthetic check that reads from search every 5 minutes.",
+    "server crashed yesterday because we ran out of disk"
+  ],
+  "Friendlier Email": [
+    "Hi, brauchen die Liste der offenen tickets bis Donnerstag. Bis dahin keine excuses.",
+    "Hey Sarah, the deployment broke staging again because someone bypassed the CI check. Need to know who and when so we can plug the hole. Asap please.",
+    "absage termin morgen"
+  ],
+  "Short Direct Email": [
+    "Hi Klaus, ich wollte dich heute mal anschreiben weil wir ja jetzt schon seit längerem an dem Thema arbeiten und ich glaube es wäre wirklich gut wenn wir mal kurz darüber sprechen könnten, vielleicht hast du ja diese Woche noch irgendwo ein Zeitfenster wo wir uns treffen oder telefonieren könnten, am besten wäre wenn du mir einfach mal ein paar Möglichkeiten vorschlägst und ich kann dann schauen was bei mir am besten passt. Es geht um den Vertrag mit der Firma Schmidt, der ja schon seit drei Wochen offen ist und wir müssen da eigentlich bis Ende des Monats eine Entscheidung treffen.",
+    "Hi Maria, hope you're well and had a great weekend. I wanted to reach out because I noticed in our last meeting that we kind of left the question about the new pricing model open, and I've been thinking about it and I have some ideas that might work well for both teams. Would you have time this week to discuss? Maybe Wednesday afternoon or Thursday morning if that works better for you, just let me know what's good and we can take it from there. Thanks!",
+    "bitte deadline verlängern bis nächste woche"
+  ],
+  "Brain-Dump to Structured Note": [
+    "okay also was ich denke ist wir müssen die landing page komplett neu machen weil die conversion so schlecht ist 0,8% letzten monat das ist halt unter aller sau außerdem ladezeit ist auch zu lang chrome lighthouse sagt 6 sekunden lcp das ist katastrophal die mobile experience ist auch broken weil der hero auf safari iOS überlappt und überhaupt ist das design super 2019 wir sollten uns mal stripe dot com oder linear app anschauen wie die das machen ah und dann noch das pricing ist gar nicht mehr aktuell die enterprise tier hat sich geändert seit q2",
+    "random thoughts after the customer call: they really like the integration with notion but apparently miss a way to bulk-export the data, also they mentioned other tools they considered including airtable and coda, the reason they chose us is the swift API but they're worried about pricing as their team grows, oh and they want SSO at some point, they're using okta currently, deal size is around 30k annual contract value which is good, decision maker is the head of operations not the IT director surprisingly",
+    "also need to refactor that thing — the user-service has gotten messy, payment logic leaked into onboarding, and the test suite is starting to flake"
+  ],
+  "Bullets to Prose": [
+    "- Q3 Umsatz: 2.1M EUR (+18% QoQ)\n- Neukunden: 47, davon 12 Enterprise\n- Churn-Rate: 3.2% (Vorquartal: 4.8%)\n- Top-Reklamationsgrund: Onboarding-Komplexität\n- Plan Q4: Onboarding-Redesign + neuer SDR",
+    "- Released v2.0 with the new dashboard layout\n- Migrated 80% of customers within 4 weeks, ahead of plan\n- One critical bug surfaced post-launch, hotfixed within 2 hours\n- Customer feedback overwhelmingly positive, NPS climbed from 41 to 54\n- Two senior engineers left during the migration, knowledge transfer ongoing",
+    "- a\n- b"
+  ],
+  "Extract Action Items": [
+    "Meeting-Notiz: Anna übernimmt das Onboarding-Redesign bis Ende des Monats. Lukas spricht diese Woche mit Stripe-Support wegen der Webhooks. Wir müssen außerdem die Compliance-Doku aktualisieren, das macht Sarah sobald sie aus dem Urlaub zurück ist (ab 15.5.). Klaus klärt mit dem Legal-Team die Datenschutz-Frage zu den neuen Webhook-URLs.",
+    "Standup notes: Marcus will fix the staging deploy issue today. Priya is going to write the migration script and have it reviewed by Wednesday. The team agreed to defer the dashboard refactor until next sprint. We still need to decide on the new linter — let's do that async on Slack by Friday.",
+    "call mom"
+  ],
+  "Prose to Bullets": [
+    "Wir haben heute morgen zusammen mit dem Vertrieb einen Workshop gemacht und sind dabei zu einigen wichtigen Erkenntnissen gekommen, die wir festhalten sollten. Erstens: die meisten Leads kommen aktuell über LinkedIn und nicht über die Webseite, was unsere ganze Content-Strategie eigentlich in Frage stellt. Zweitens: die Conversion vom MQL zum SQL liegt bei nur 12 Prozent, das ist deutlich unter Branchenschnitt. Drittens: unsere Sales-Cycle ist von 60 auf 90 Tage gestiegen, vermutlich weil wir mit größeren Accounts arbeiten. Wir müssen das ganze nochmal mit dem CMO durchsprechen.",
+    "The product team identified three blockers in this sprint that need to be addressed before we can ship the new pricing tier: the billing service still uses the old Stripe SDK that doesn't support metered billing, the admin panel doesn't have a way to grant trial extensions, and there's no notification system for usage limits being approached. The team estimates two weeks of work to clear these blockers, assuming no further surprises.",
+    "Es regnet."
+  ],
+  "Add Edge Cases": [
+    "Schreibe einen Prompt der einen Markdown-zu-PDF-Converter spezifiziert. Der soll Bilder, Tabellen und Codeblöcke korrekt rendern.",
+    "Generate a prompt for an AI assistant that helps users plan their weekly meal prep based on dietary preferences and budget.",
+    "extract phone numbers from text"
+  ],
+  "Add Role and Goals": [
+    "Schreib mir bitte einen Prompt, der bei einem Code-Review hilft. Soll auf Performance achten und auf Sicherheit, am besten in mehreren Sprachen einsetzbar.",
+    "Help me write a prompt for an AI to summarize legal contracts and extract key clauses, deadlines, and parties involved.",
+    "write a prompt that does X"
+  ],
+  "Improve Prompt": [
+    "mach mir mal nen kurzen sketch wie wir die landing page neu strukturieren können",
+    "write a function that handles user login",
+    "ich brauche einen prompt der mir hilft, gute commit messages zu schreiben für deutsche projekte mit gemischtem code",
+    "generate a system that scans GitHub PRs for security issues and posts comments",
+    "so jetzt müssen wir mal kurz schauen ob die docker container alle laufen, kannst du mir das per script abnehmen"
+  ],
+  "Make Prompt Negotiable": [
+    "Schreibe eine komplette Authentication-Lösung mit OAuth2, JWT, Refresh-Tokens und Rate-Limiting für unser Backend. Soll heute fertig sein.",
+    "build me an MVP for a marketplace app like Etsy but for digital art",
+    "setup ci"
+  ],
+  "Polish (with Claude Code context)": [
+    "okay jetzt füg auch noch tests dazu",
+    "now also handle the empty input case",
+    "und make it dark mode"
+  ],
+  "Structure Prompt": [
+    "ich brauche ein script das alle bilder im ordner kleiner macht aber transparente png erkennt und gleich behandelt, hauptsächlich für unsere produktseite, max 800px breit oder so, achja qualität soll gut bleiben",
+    "build me a chatbot that can answer customer questions about our shipping policy and returns, should integrate with our zendesk, fall back to human if confidence too low",
+    "migrate database"
+  ],
+  "Summarize Briefly": [
+    "Du bist ein erfahrener Vollzeit-Personalmanager mit Spezialisierung auf strategisches Recruiting, der den globalen Talentmarkt seit über 15 Jahren intensiv beobachtet und sowohl in Konzernen als auch Startups gearbeitet hat. Deine Aufgabe ist es, mir bei der Erstellung einer komplett überarbeiteten, modernen, ansprechenden, inklusiven, conversion-optimierten Stellenanzeige für eine Senior-Backend-Engineer-Position in unserem schnell wachsenden FinTech-Unternehmen zu helfen, wobei wir besonders auf Diversity, Equity, Inclusion achten und gleichzeitig technische Exzellenz, Team-Fit, kulturelle Passung und Wachstumsorientierung adressieren wollen, also bitte schreib mir was Tolles.",
+    "You are a senior product manager at a SaaS company with extensive experience in B2B sales enablement tools. The user is asking you to design, plan, scope, prioritize, and create a detailed product roadmap for the next 4 quarters covering all stages of the customer journey from acquisition through retention, including discovery activities, customer interviews, MVP scoping, beta program, GTM strategy, pricing experiments, expansion playbook, and churn reduction. Please provide a comprehensive and detailed roadmap with specific dates, ownership, dependencies, and KPIs.",
+    "a"
+  ],
+  "Write CLAUDE.md Rule": [
+    "claude soll nicht mehr mocks in tests verwenden weil wir letzte woche einen migration-bug deswegen erst in prod gefunden haben, integration-tests sollen echten datenbank treffen",
+    "stop summarizing what you just did at the end of every response, I can read the diff myself",
+    "immer absolute pfade"
+  ],
+  "Write Memory Entry": [
+    "uli ist senior data engineer und arbeitet seit zehn jahren mit airflow, kafka und dbt; aktuell baut er die analytics-pipeline für ein fintech-startup neu auf",
+    "weekly merge freeze starts every Thursday at 5pm because the mobile team cuts release branches Friday morning",
+    "linear project ID for pipeline bugs"
+  ],
+  "Draft Comment": [
+    "Original post: \"Manche Devs nutzen heute noch keine LSPs und ich verstehe es nicht — verbringt ihr ernsthaft Zeit damit, Imports manuell zu schreiben?\" → reply",
+    "Original post by Anya Vasilenko: \"Hot take: every meeting under 30 minutes should be a Slack message instead. Calendar bloat is a productivity killer.\" → reply",
+    "post says \"thoughts?\""
+  ],
+  "Make Thread Outline": [
+    "Wir haben fünf Mythen entdeckt warum Startups früh sterben: zu wenig Cash, falsches Team, kein Markt, schlechtes Timing, und vor allem das, was niemand erzählt: Gründer überschätzen ihren eigenen Output. Hier mein Take auf jeden einzelnen.",
+    "Today I want to share what I learned in 6 months of cold outreach: 80% of \"best practice\" advice is wrong for early-stage founders. Specific examples: the ICP question, the email length thing, the CTA myth, and the follow-up cadence trap.",
+    "ai changed my workflow"
+  ],
+  "Sharpen Social Post": [
+    "So, ich habe heute echt eine spannende Sache entdeckt, weil unser neues Feature ist endlich live und ich glaube wirklich, dass es einen Unterschied machen wird für unsere User, die schon lange darauf gewartet haben, dass wir das Problem mit den langen Wartezeiten endlich lösen.",
+    "I just realized that most teams are spending way too much time on standup meetings when async updates would work just fine for 80% of the content, and the remaining 20% deserves a real conversation, not a status report. Honestly this is something we should all be thinking about more.",
+    "new product launched"
+  ],
+  "Fix Grammar Only": [
+    "Ich habe gestern mit dem Klient gesprochen und er meinte das er den vertrag bis ende der woche unterschreiben will, aber er hatt noch ein paar fragen wegen der laufzeit und der Kündigungs frist. ich glaub das wir das schnell lösen kann.",
+    "Their team is realy good, they shipped the feature in record time and the quality was suprising high. The PM was a bit overwelmed but the engineers had everything under controll. We should definately work with them again next quartal.",
+    "Es ist ist heute schön."
+  ],
+  "Make Formal": [
+    "Hi Maxi, danke für die schnelle Antwort gestern! Hab kurz mit dem Team gequatscht und wir können das so machen wie du vorgeschlagen hast. Schick mir einfach den Vertrag rüber, dann unterschreib ich.",
+    "Hey, just wanted to give you a heads-up that we'll need to push the launch by a couple of days. Some stuff came up on the engineering side and we don't wanna ship something half-baked. Hope that's cool!",
+    "ok passt"
+  ],
+  "Make Informal": [
+    "Sehr geehrte Damen und Herren, hiermit teilen wir Ihnen mit, dass die in Ihrem Auftrag bestellten Komponenten am 14. Mai termingerecht versandt wurden. Sie können den Versandstatus über die Ihnen zugesandte Tracking-Nummer einsehen. Bei Rückfragen stehen wir Ihnen gerne zur Verfügung.",
+    "I would like to express my sincere gratitude for the opportunity to participate in last week's quarterly business review. The insights provided regarding our forthcoming roadmap initiatives were particularly enlightening, and I look forward to our continued collaboration.",
+    "Bitte beachten Sie die Hinweise."
+  ],
+  "Plain Language": [
+    "Aufgrund der Implementierung der neuen DSGVO-konformen Datenverarbeitungsrichtlinien müssen alle Kundeninteraktionen, die im Rahmen unserer Customer-Success-Aktivitäten stattfinden, fortan einer doppelten Verifikation unterzogen werden, bevor personenbezogene Daten in unsere Analyseplattform übertragen werden dürfen.",
+    "Pursuant to the recently ratified amendments to our service-level agreement, all instances of degraded performance exceeding the contractually delineated thresholds shall henceforth be subject to a remediation protocol involving cross-functional incident response teams convened within a 30-minute aperture from initial detection.",
+    "Lol das ist krass."
+  ],
+  "5 Alternative Headlines": [
+    "Warum die meisten Standup-Meetings reine Zeitverschwendung sind",
+    "How we cut our cloud bill by 60% in six weeks",
+    "a guide to onboarding"
+  ],
+  "Hook Paragraph": [
+    "Topic: Wie wir bei einer kleinen Agentur in 12 Monaten von 3 auf 12 Mitarbeiter gewachsen sind — und welche Fehler wir dabei gemacht haben",
+    "Topic: Why most internal tooling teams produce shadow infrastructure that haunts companies for years",
+    "Topic: pricing"
+  ],
+  "Sharpen Headline": [
+    "Wie unser revolutionäres neues Produkt die Art und Weise, wie kleine Unternehmen ihre Buchhaltung machen, für immer verändern wird",
+    "5 Things You Won't Believe About Remote Work That Will Blow Your Mind",
+    "Q3 Update"
+  ],
+  "TL;DR": [
+    "In den letzten sechs Monaten haben wir unser Onboarding komplett überarbeitet. Statt eines 45-minütigen Live-Demos mit Sales bekommen Neukunden jetzt einen interaktiven Produkt-Walkthrough, der sich an ihre Rolle anpasst (Admin, Developer, End-User). Die Conversion vom Trial zum Paid stieg von 14% auf 23%, die Time-to-Value sank von durchschnittlich 12 auf 4 Tage, und der Support reportet 30% weniger Onboarding-bezogene Tickets. Die Investition (drei Engineers, zwei Designer, vier Monate) hat sich nach acht Wochen amortisiert.",
+    "Last quarter we ran an experiment to remove our pricing page entirely and instead route every visitor to a \"talk to sales\" form. Hypothesis: high-intent buyers convert better when forced into conversation, and we'd compensate the volume drop with deal size. Result: total revenue dropped 22% even though average contract value rose 35% — the math doesn't work because we lost too many self-serve customers who would never have talked to sales but ended up buying anyway. We restored the pricing page and learned that \"channel forcing\" is a real risk in PLG models.",
+    "we shipped feature X"
+  ]
+}
