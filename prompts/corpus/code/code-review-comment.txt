@@ -17,4 +17,4 @@ def process_orders(orders):
             db.save(order)
 ```
 
-return null;
+function getUserAge(user) { return user.age; }

@@ -4,4 +4,4 @@ okay also was ich denke ist wir müssen die landing page komplett neu machen wei
 
 random thoughts after the customer call: they really like the integration with notion but apparently miss a way to bulk-export the data, also they mentioned other tools they considered including airtable and coda, the reason they chose us is the swift API but they're worried about pricing as their team grows, oh and they want SSO at some point, they're using okta currently, deal size is around 30k annual contract value which is good, decision maker is the head of operations not the IT director surprisingly
 
-also need to refactor that thing
+also need to refactor that thing — the user-service has gotten messy, payment logic leaked into onboarding, and the test suite is starting to flake
