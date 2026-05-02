@@ -1,0 +1,46 @@
+{
+  "version" : 3,
+  "categories" : [
+    {
+      "id" : "00000000-0000-0000-0000-000000000201",
+      "name" : "DevOps",
+      "sortOrder" : 100,
+      "isEnabled" : true,
+      "source" : "community"
+    }
+  ],
+  "presets" : [
+    {
+      "id" : "11110000-0000-0000-0000-000000000001",
+      "categoryID" : "00000000-0000-0000-0000-000000000201",
+      "name" : "Postmortem Polish",
+      "template" : "Polish the postmortem draft below into a clear, blameless incident report.\nKeep the timeline factual, separate root causes from contributing factors, and end with concrete remediation items.\nPreserve the user's intent and language. Return only the polished postmortem.\n\n{{text}}",
+      "isEnabled" : true,
+      "outputMode" : "replaceSelection",
+      "tagMode" : "off",
+      "emojiUsage" : "off",
+      "languageMode" : "keepOriginal",
+      "tone" : "neutral",
+      "toneIntensity" : 1,
+      "writingStyle" : "professional",
+      "sortOrder" : 0,
+      "source" : "community"
+    },
+    {
+      "id" : "11110000-0000-0000-0000-000000000002",
+      "categoryID" : "00000000-0000-0000-0000-000000000101",
+      "name" : "Make Prompt Negotiable",
+      "template" : "Rewrite the prompt below so it explicitly invites the AI assistant to push back, ask clarifying questions, or propose alternatives when the request is ambiguous, risky, or under-specified.\nKeep the user's goal intact. Return only the improved prompt.\n\n{{text}}",
+      "isEnabled" : true,
+      "outputMode" : "replaceSelection",
+      "tagMode" : "off",
+      "emojiUsage" : "off",
+      "languageMode" : "keepOriginal",
+      "tone" : "neutral",
+      "toneIntensity" : 1,
+      "writingStyle" : "default",
+      "sortOrder" : 1,
+      "source" : "community"
+    }
+  ]
+}
