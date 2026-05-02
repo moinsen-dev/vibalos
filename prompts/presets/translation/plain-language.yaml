@@ -1,0 +1,12 @@
+---
+id: 22220000-0106-0002-0000-000000000000
+name: Plain Language
+isEnabled: true
+sortOrder: 1
+source: community
+---
+Rewrite the selected text in plain language at roughly B1 reading level.
+Use short sentences and common words. Avoid jargon, idioms, and complex grammar.
+Preserve all facts and the user's language. Return only the rewritten text.
+
+{{text}}

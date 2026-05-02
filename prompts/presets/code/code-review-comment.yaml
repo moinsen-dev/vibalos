@@ -1,0 +1,14 @@
+---
+id: 22220000-0104-0004-0000-000000000000
+name: Code Review Comment
+isEnabled: true
+outputMode: copyToClipboard
+sortOrder: 3
+source: community
+---
+Write a constructive code review comment on the selected code.
+Point out a concrete issue or improvement suggestion. Be specific, not vague — name the line, the symbol, or the pattern.
+Avoid sounding harsh; match the tone of a respectful senior reviewer.
+Preserve the user's language. Return only the comment text.
+
+{{text}}

@@ -1,0 +1,15 @@
+---
+id: 22220000-0102-0001-0000-000000000000
+name: Sharpen Social Post
+isEnabled: true
+shortcutPosition: 1
+tagMode: medium
+emojiUsage: medium
+sortOrder: 0
+source: community
+---
+Rewrite the selected text as a concise social media post.
+Keep the language, preserve the core intent, make the hook clearer, and avoid hype.
+Return only the rewritten post.
+
+{{text}}

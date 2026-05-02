@@ -1,0 +1,14 @@
+---
+id: 22220000-0104-0005-0000-000000000000
+name: Generate Test Skeleton
+isEnabled: true
+outputMode: copyToClipboard
+sortOrder: 4
+source: community
+---
+Write a unit test skeleton for the selected function or code block.
+Match the language and likely test framework (e.g. XCTest for Swift, pytest for Python, Jest/Vitest for JS).
+Cover the happy path and one edge case. Use placeholder values where the real input is unknown.
+Return only the test code — no preamble, no markdown fences.
+
+{{text}}

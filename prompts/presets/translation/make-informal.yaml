@@ -1,0 +1,12 @@
+---
+id: 22220000-0106-0004-0000-000000000000
+name: Make Informal
+isEnabled: true
+sortOrder: 3
+source: community
+---
+Rewrite the selected text in a more casual, informal tone.
+Use everyday phrasing and contractions. Keep it natural — don't overdo slang.
+Preserve all facts and the user's language. Return only the rewritten text.
+
+{{text}}

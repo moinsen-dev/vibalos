@@ -1,0 +1,13 @@
+---
+id: 22220000-0101-0002-0000-000000000000
+name: Structure Prompt
+isEnabled: true
+shortcutPosition: 2
+sortOrder: 1
+source: community
+---
+Structure the prompt below into a clean, actionable prompt.
+Add sections only where useful, such as goal, context, constraints, output format, and acceptance criteria.
+Preserve the user's intent and language. Return only the structured prompt.
+
+{{text}}

@@ -1,0 +1,12 @@
+---
+id: 22220000-0101-0004-0000-000000000000
+name: Add Edge Cases
+isEnabled: true
+shortcutPosition: 4
+sortOrder: 3
+source: community
+---
+Improve the prompt below by adding relevant edge cases, constraints, and failure modes the assistant should handle.
+Keep it concise and practical. Preserve the user's intent and language. Return only the improved prompt.
+
+{{text}}

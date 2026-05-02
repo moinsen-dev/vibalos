@@ -1,0 +1,12 @@
+---
+id: 22220000-0107-0001-0000-000000000000
+name: Sharpen Headline
+isEnabled: true
+sortOrder: 0
+source: community
+---
+Sharpen the selected headline.
+Make it concrete, specific, and easy to scan. Drop filler words. Avoid hype and clickbait.
+Preserve the user's language and core promise. Return only the sharpened headline — one line, no quotes.
+
+{{text}}

@@ -1,0 +1,12 @@
+---
+id: 22220000-0106-0003-0000-000000000000
+name: Make Formal
+isEnabled: true
+sortOrder: 2
+source: community
+---
+Rewrite the selected text in a more formal register.
+Replace casual phrasing and contractions, but keep it natural — avoid pompous or archaic language.
+Preserve all facts and the user's language. Return only the rewritten text.
+
+{{text}}

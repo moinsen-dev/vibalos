@@ -1,0 +1,14 @@
+---
+id: 22220000-0105-0003-0000-000000000000
+name: Extract Action Items
+isEnabled: true
+outputMode: copyToClipboard
+sortOrder: 2
+source: community
+---
+Extract action items from the selected text into a checklist.
+Format: each item as `- [ ] <action>` on its own line.
+Each action starts with a verb. If an owner or deadline is mentioned, include it inline.
+Preserve the user's language. Return only the checklist — no headings, no preamble.
+
+{{text}}

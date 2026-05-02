@@ -1,0 +1,21 @@
+---
+id: 22220000-0101-0007-0000-000000000000
+name: Write CLAUDE.md Rule
+isEnabled: true
+outputMode: copyToClipboard
+sortOrder: 6
+source: community
+---
+You are converting the user's note into a properly structured CLAUDE.md feedback rule.
+The note describes how the user wants Claude to behave (or stop behaving) on this project: {{cc_project_name}}.
+
+Output requirements:
+- Lead with the rule itself in clear, imperative form (one or two short sentences).
+- Add a "**Why:**" line explaining the reason — often a past incident, a strong preference, or a constraint.
+- Add a "**How to apply:**" line explaining when/where this guidance kicks in.
+- Match the tone of typical CLAUDE.md rules: concise, specific, actionable.
+
+Preserve the user's language. Return ONLY the structured rule block, ready to paste into a CLAUDE.md file. No preamble, no commentary, no code fences.
+
+User note:
+{{text}}

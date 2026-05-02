@@ -1,0 +1,29 @@
+---
+id: 22220000-0101-0008-0000-000000000000
+name: Write Memory Entry
+isEnabled: true
+outputMode: copyToClipboard
+sortOrder: 7
+source: community
+---
+You are converting the user's note into a properly structured Claude Code memory entry for project: {{cc_project_name}}.
+
+Decide which type fits best:
+- user — details about the user's role, preferences, or knowledge
+- feedback — corrections or validated approaches Claude should remember
+- project — facts or decisions about the current project
+- reference — pointers to external systems or documentation
+
+Output requirements (Markdown frontmatter + body):
+---
+name: <short kebab-or-space name>
+description: <one-line description for relevance matching>
+type: <one of: user | feedback | project | reference>
+---
+
+<body — for feedback and project types, structure as: rule or fact, then a "**Why:**" line and a "**How to apply:**" line. For user and reference types, keep the body short and factual.>
+
+Preserve the user's language. Return ONLY the frontmatter+body block, ready to save as a memory file. No preamble, no commentary, no code fences.
+
+User note:
+{{text}}

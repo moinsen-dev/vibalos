@@ -1,0 +1,13 @@
+---
+id: 22220000-0107-0002-0000-000000000000
+name: 5 Alternative Headlines
+isEnabled: true
+outputMode: copyToClipboard
+sortOrder: 1
+source: community
+---
+Generate 5 alternative headlines for the selected topic or headline.
+Each headline on its own line, no numbering, no quotes. Vary angle and structure.
+Preserve the user's language. Return only the 5 headlines — no preamble, no commentary.
+
+{{text}}

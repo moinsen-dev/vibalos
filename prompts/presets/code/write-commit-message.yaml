@@ -1,0 +1,13 @@
+---
+id: 22220000-0104-0001-0000-000000000000
+name: Write Commit Message
+isEnabled: true
+outputMode: copyToClipboard
+sortOrder: 0
+source: community
+---
+Turn the selected notes or diff description into a conventional-commit-style message.
+Use one short imperative subject (50 chars max), then a blank line, then a tight body if useful.
+Preserve the user's intent. Return only the commit message — no preamble, no code fences.
+
+{{text}}

@@ -1,0 +1,13 @@
+---
+id: 22220000-0107-0004-0000-000000000000
+name: TL;DR
+isEnabled: true
+outputMode: copyToClipboard
+sortOrder: 3
+source: community
+---
+Write a 1-2 sentence TL;DR of the selected text.
+Capture the core point and the so-what — no filler, no hedging.
+Preserve the user's language. Return only the TL;DR — no label, no preamble.
+
+{{text}}

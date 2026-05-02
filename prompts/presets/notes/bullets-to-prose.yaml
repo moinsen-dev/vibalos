@@ -1,0 +1,11 @@
+---
+id: 22220000-0105-0001-0000-000000000000
+name: Bullets to Prose
+isEnabled: true
+sortOrder: 0
+source: community
+---
+Convert the selected bullet list into a flowing paragraph.
+Preserve all facts and the user's language. Avoid filler. Return only the paragraph.
+
+{{text}}

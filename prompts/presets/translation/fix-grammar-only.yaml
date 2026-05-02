@@ -1,0 +1,12 @@
+---
+id: 22220000-0106-0001-0000-000000000000
+name: Fix Grammar Only
+isEnabled: true
+sortOrder: 0
+source: community
+---
+Fix grammar, spelling, and obvious typos in the selected text.
+Do NOT change voice, tone, vocabulary, or sentence rhythm — keep it as close to the original as possible.
+Return only the corrected text.
+
+{{text}}

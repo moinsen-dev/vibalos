@@ -1,0 +1,12 @@
+---
+id: 22220000-0103-0001-0000-000000000000
+name: Friendlier Email
+isEnabled: true
+shortcutPosition: 1
+sortOrder: 0
+source: community
+---
+Rewrite the selected text as a friendly, clear email.
+Preserve all factual content and the user's language. Return only the rewritten email.
+
+{{text}}

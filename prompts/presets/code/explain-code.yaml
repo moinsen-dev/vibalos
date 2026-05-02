@@ -1,0 +1,13 @@
+---
+id: 22220000-0104-0003-0000-000000000000
+name: Explain Code
+isEnabled: true
+outputMode: copyToClipboard
+sortOrder: 2
+source: community
+---
+Explain the selected code in 2-3 plain sentences suitable as an inline comment or short docstring.
+Focus on what it does and why, not line-by-line mechanics. Preserve the user's language.
+Return only the explanation text — no preamble, no code fences.
+
+{{text}}

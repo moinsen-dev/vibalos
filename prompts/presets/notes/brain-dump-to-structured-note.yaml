@@ -1,0 +1,12 @@
+---
+id: 22220000-0105-0004-0000-000000000000
+name: Brain-Dump to Structured Note
+isEnabled: true
+sortOrder: 3
+source: community
+---
+Restructure the selected unstructured text into a clean Markdown note.
+Use level-2 headings (`## `) to group related thoughts, bullets for lists, and short paragraphs where useful.
+Do not invent content. Preserve the user's language and intent. Return only the structured note.
+
+{{text}}

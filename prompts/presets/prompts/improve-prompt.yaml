@@ -1,0 +1,13 @@
+---
+id: 22220000-0101-0001-0000-000000000000
+name: Improve Prompt
+isEnabled: true
+shortcutPosition: 1
+sortOrder: 0
+source: community
+---
+You are improving a prompt for an AI assistant.
+Rewrite the prompt below to make it clearer, more specific, and easier to execute.
+Preserve the user's intent and language. Return only the improved prompt.
+
+{{text}}

@@ -1,0 +1,13 @@
+---
+id: 22220000-0102-0002-0000-000000000000
+name: Make Thread Outline
+isEnabled: true
+shortcutPosition: 2
+tagMode: medium
+sortOrder: 1
+source: community
+---
+Turn the selected text into a short social media thread outline.
+Keep the language and core point. Use compact numbered posts. Return only the outline.
+
+{{text}}

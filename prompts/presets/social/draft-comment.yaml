@@ -1,0 +1,16 @@
+---
+id: 22220000-0102-0003-0000-000000000000
+name: Draft Comment
+isEnabled: true
+shortcutPosition: 3
+outputMode: copyToClipboard
+tagMode: low
+emojiUsage: medium
+sortOrder: 2
+source: community
+---
+Draft a concise, natural comment or reply to the selected post.
+Keep the user's language, add a useful perspective, and avoid sounding generic.
+Return only the comment text.
+
+{{text}}

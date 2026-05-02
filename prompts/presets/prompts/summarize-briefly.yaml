@@ -1,0 +1,12 @@
+---
+id: 22220000-0101-0005-0000-000000000000
+name: Summarize Briefly
+isEnabled: true
+shortcutPosition: 5
+sortOrder: 4
+source: community
+---
+Summarize the selected text into a concise prompt brief.
+Keep the important goal, context, constraints, and desired output. Preserve the user's language. Return only the brief.
+
+{{text}}

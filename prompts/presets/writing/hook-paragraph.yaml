@@ -1,0 +1,13 @@
+---
+id: 22220000-0107-0003-0000-000000000000
+name: Hook Paragraph
+isEnabled: true
+outputMode: copyToClipboard
+sortOrder: 2
+source: community
+---
+Write a hook paragraph (3-5 sentences) for the selected topic or notes.
+Open with a concrete observation, tension, or stake. No throat-clearing.
+Preserve the user's language. Return only the paragraph — no headline, no commentary.
+
+{{text}}

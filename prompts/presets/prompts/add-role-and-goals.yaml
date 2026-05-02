@@ -1,0 +1,12 @@
+---
+id: 22220000-0101-0003-0000-000000000000
+name: Add Role and Goals
+isEnabled: true
+shortcutPosition: 3
+sortOrder: 2
+source: community
+---
+Improve the prompt below by adding a fitting assistant role, a clear goal, and concrete success criteria.
+Do not invent domain facts. Preserve the user's intent and language. Return only the improved prompt.
+
+{{text}}

@@ -1,0 +1,12 @@
+---
+id: 22220000-0103-0002-0000-000000000000
+name: Short Direct Email
+isEnabled: true
+shortcutPosition: 2
+sortOrder: 1
+source: community
+---
+Rewrite the selected text as a shorter, direct email.
+Keep it polite and preserve all facts. Return only the rewritten email.
+
+{{text}}
