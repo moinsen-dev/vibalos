@@ -14,6 +14,7 @@ The community front-door for Vibalos. Use it for:
 - 🐛 **[Bug reports](../../issues/new?template=bug_report.md)** — something broken? Tell me.
 - 💡 **[Feature requests](../../issues/new?template=feature_request.md)** — what should Vibalos learn next?
 - 💬 **[Discussions](../../discussions)** — questions, ideas, conversations.
+- 📜 **[Prompt catalog](./prompts)** — the 32 polish presets Vibalos ships with live here as YAML files. **Anyone can submit a new preset via PR** — see [`prompts/CONTRIBUTING.md`](./prompts/CONTRIBUTING.md). Every preset passes an automated eval before merging.
 
 I read every issue. Solo developer, no support team — but I'm responsive.
 
@@ -31,7 +32,7 @@ Vibalos is one of my **daily-driver tools**. I use it every single day, all day,
 
 Loose, honest roadmap (will evolve based on what hurts most):
 
-- More polish presets (memory entries, CLAUDE.md rule writing, prompt pre-flight)
+- ✅ Community-curated prompt catalog ([prompts/](./prompts)) — done; 32 presets, eval-gated PRs welcome
 - Smarter Claude Code integration (live session awareness, auto-context injection)
 - Voice-to-prompt
 - Multi-Mac license tier
