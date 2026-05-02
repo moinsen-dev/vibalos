@@ -1,0 +1,63 @@
+name: Bundle prompts
+
+# Regenerates prompts/catalog.json from YAML sources whenever the
+# YAML files change. Vibalos's CatalogSyncService consumes the
+# generated JSON; contributors only edit YAML.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "prompts/categories.yaml"
+      - "prompts/presets/**"
+      - "prompts/bundle.py"
+      - ".github/workflows/bundle-prompts.yml"
+  pull_request:
+    paths:
+      - "prompts/categories.yaml"
+      - "prompts/presets/**"
+      - "prompts/bundle.py"
+
+permissions:
+  contents: write
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Need write access for the auto-commit step on main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      # On PRs: validate only, fail the check if YAML is broken.
+      - name: Validate (PR)
+        if: github.event_name == 'pull_request'
+        run: python3 prompts/bundle.py --check
+
+      # On main: regenerate catalog.json. If it changed, commit it back.
+      - name: Bundle catalog (main)
+        if: github.event_name == 'push'
+        run: python3 prompts/bundle.py
+
+      - name: Commit regenerated catalog.json
+        if: github.event_name == 'push'
+        run: |
+          if git diff --quiet -- prompts/catalog.json; then
+            echo "catalog.json is up to date — no commit needed."
+            exit 0
+          fi
+          git config user.name "vibalos-bot"
+          git config user.email "noreply@moinsen.dev"
+          git add prompts/catalog.json
+          git commit -m "prompts: regenerate catalog.json from YAML sources"
+          git push

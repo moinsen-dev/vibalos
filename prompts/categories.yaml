@@ -1,0 +1,60 @@
+# Categories used by the community catalog. Built-in categories are
+# listed here too so the bundler can resolve `presets/<slug>/`-style
+# directories — at sync time the app keeps its own built-in versions
+# (the merge logic skips replacing built-in source entries).
+
+- id: 00000000-0000-0000-0000-000000000101
+  slug: prompts
+  name: Prompts
+  modifierBank: option
+  sortOrder: 0
+  source: builtin
+
+- id: 00000000-0000-0000-0000-000000000102
+  slug: social
+  name: Social
+  modifierBank: optionShift
+  sortOrder: 1
+  source: builtin
+
+- id: 00000000-0000-0000-0000-000000000103
+  slug: email
+  name: Email
+  modifierBank: optionControl
+  sortOrder: 2
+  source: builtin
+
+- id: 00000000-0000-0000-0000-000000000104
+  slug: code
+  name: Code
+  modifierBank: null
+  sortOrder: 3
+  source: builtin
+
+- id: 00000000-0000-0000-0000-000000000105
+  slug: notes
+  name: Notes
+  modifierBank: null
+  sortOrder: 4
+  source: builtin
+
+- id: 00000000-0000-0000-0000-000000000106
+  slug: translation
+  name: Translation
+  modifierBank: null
+  sortOrder: 5
+  source: builtin
+
+- id: 00000000-0000-0000-0000-000000000107
+  slug: writing
+  name: Writing
+  modifierBank: null
+  sortOrder: 6
+  source: builtin
+
+- id: 00000000-0000-0000-0000-000000000201
+  slug: devops
+  name: DevOps
+  modifierBank: null
+  sortOrder: 100
+  source: community

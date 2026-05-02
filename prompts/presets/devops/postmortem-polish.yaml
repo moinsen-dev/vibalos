@@ -1,0 +1,17 @@
+---
+id: 11110000-0000-0000-0000-000000000001
+name: Postmortem Polish
+isEnabled: true
+sortOrder: 0
+source: community
+writingStyle: professional
+recommendedEngines:
+  - engine: ollama
+    model: gemma3:4b
+    notes: "Tested DE+EN — output is structured and stays blameless."
+---
+Polish the postmortem draft below into a clear, blameless incident report.
+Keep the timeline factual, separate root causes from contributing factors, and end with concrete remediation items.
+Preserve the user's intent and language. Return only the polished postmortem.
+
+{{text}}

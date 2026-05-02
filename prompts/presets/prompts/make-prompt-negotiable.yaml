@@ -1,0 +1,17 @@
+---
+id: 11110000-0000-0000-0000-000000000002
+name: Make Prompt Negotiable
+isEnabled: true
+sortOrder: 1
+source: community
+recommendedEngines:
+  - engine: ollama
+    model: gemma3:4b
+    notes: "Encourages the assistant to ask clarifying questions instead of guessing."
+  - engine: appleFoundation
+    notes: "Works well at default temperature."
+---
+Rewrite the prompt below so it explicitly invites the AI assistant to push back, ask clarifying questions, or propose alternatives when the request is ambiguous, risky, or under-specified.
+Keep the user's goal intact. Return only the improved prompt.
+
+{{text}}
