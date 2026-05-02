@@ -68,10 +68,32 @@ def call_bridge(action: str, parameters: dict, bridge_url: str = DEFAULT_BRIDGE_
 
 
 def preview_preset(preset_name: str, user_input: str, bridge_url: str = DEFAULT_BRIDGE_URL) -> tuple[str, str, str]:
-    """Returns (engine, model, model_output)."""
+    """Returns (engine, model, model_output) by name-lookup in the running app's catalog."""
     resp = call_bridge("preview_preset", {"name": preset_name, "input": user_input}, bridge_url=bridge_url)
     if not resp.get("success"):
         raise RuntimeError(f"preview_preset failed: {resp.get('data', {}).get('message', resp)}")
+    out = resp["data"].get("output", {})
+    return out.get("engine", "unknown"), out.get("model", "unknown"), out.get("result", "")
+
+
+def preview_template(meta: PresetMeta, user_input: str, bridge_url: str = DEFAULT_BRIDGE_URL) -> tuple[str, str, str]:
+    """Returns (engine, model, model_output) by sending the YAML template
+    directly. Bypasses the catalog so we can test new versions without
+    syncing them in first."""
+    params = {
+        "template": meta.template,
+        "input": user_input,
+        "name": meta.name,
+        "tagMode": meta.tag_mode,
+        "emojiUsage": meta.emoji_usage,
+        "languageMode": meta.language_mode,
+        "tone": meta.tone,
+        "toneIntensity": str(meta.tone_intensity),
+        "writingStyle": meta.writing_style,
+    }
+    resp = call_bridge("preview_template", params, bridge_url=bridge_url)
+    if not resp.get("success"):
+        raise RuntimeError(f"preview_template failed: {resp.get('data', {}).get('message', resp)}")
     out = resp["data"].get("output", {})
     return out.get("engine", "unknown"), out.get("model", "unknown"), out.get("result", "")
 
@@ -193,7 +215,10 @@ def run_eval_for_preset(entry: PresetEntry, judge: ClaudeJudge | None, bridge_ur
 
     for i, user_input in enumerate(inputs, start=1):
         print(f"  [{i}/{len(inputs)}] {entry.meta.name}: {user_input[:60]}{'…' if len(user_input) > 60 else ''}")
-        engine, model, output = preview_preset(entry.meta.name, user_input, bridge_url=bridge_url)
+        # Use preview_template so the eval always tests the YAML's
+        # current template, regardless of whether the running app's
+        # catalog has been synced to the latest version.
+        engine, model, output = preview_template(entry.meta, user_input, bridge_url=bridge_url)
         if judge is None:
             verdict = JudgeVerdict(passed=False, scores={}, reasons=["dry-run"], suggested_template=None, raw_response="")
         else:
