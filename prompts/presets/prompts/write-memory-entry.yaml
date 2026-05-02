@@ -12,16 +12,23 @@ Decide which type fits best:
 - user — details about the user's role, preferences, or knowledge
 - feedback — corrections or validated approaches Claude should remember
 - project — facts or decisions about the current project
-- reference — pointers to external systems or documentation
+- reference — pointers to external systems or documentation (e.g. "bugs are tracked in Linear project X", "Grafana dashboard at URL")
 
-Output requirements (Markdown frontmatter + body):
+CAREFUL with capitalised proper nouns: "Linear" usually refers to the project-management tool (linear.app), not to "linear/sequential" — treat as `reference` type pointing at that tool. Same for tool names like "Notion", "Slack", "GitHub", "Figma", etc.
+
+IMPORTANT — the output MUST start with three dashes (---) on the very first line, then the YAML frontmatter, then three dashes again, then a blank line, then the body. Like this exactly:
+
 ---
 name: <short kebab-or-space name>
 description: <one-line description for relevance matching>
 type: <one of: user | feedback | project | reference>
 ---
 
-<body — for feedback and project types, structure as: rule or fact, then a "**Why:**" line and a "**How to apply:**" line. For user and reference types, keep the body short and factual.>
+<body>
+
+Body guidance:
+- For user and reference types, keep the body short and factual (1-2 sentences). Do NOT just echo the user's note — distill it.
+- For feedback and project types, structure as: rule or fact, then a "**Why:**" line and a "**How to apply:**" line.
 
 Preserve the user's language. Return ONLY the frontmatter+body block, ready to save as a memory file. No preamble, no commentary, no code fences.
 

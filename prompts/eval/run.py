@@ -63,7 +63,19 @@ def call_bridge(action: str, parameters: dict, bridge_url: str = DEFAULT_BRIDGE_
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             return json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        # 4xx/5xx for a single call: the bridge IS reachable, the
+        # action just failed. Surface as RuntimeError so the eval
+        # loop can record it and continue with the next input.
+        body = ""
+        try:
+            body = e.read().decode("utf-8")
+        except Exception:
+            pass
+        raise RuntimeError(f"bridge HTTP {e.code}: {body[:300]}") from e
     except urllib.error.URLError as e:
+        # Connection refused / app not running — abort the sweep,
+        # there's nothing useful we can do.
         raise SystemExit(f"Cannot reach Vibalos bridge at {bridge_url}: {e}\nIs the app running?")
 
 
@@ -218,9 +230,18 @@ def run_eval_for_preset(entry: PresetEntry, judge, bridge_url: str, max_inputs: 
         # Use preview_template so the eval always tests the YAML's
         # current template, regardless of whether the running app's
         # catalog has been synced to the latest version.
-        engine, model, output = preview_template(entry.meta, user_input, bridge_url=bridge_url)
+        engine_error: str | None = None
+        try:
+            engine, model, output = preview_template(entry.meta, user_input, bridge_url=bridge_url)
+        except RuntimeError as e:
+            # Engine failure (empty Ollama response, model crashed, etc.)
+            # is itself a failure mode worth scoring. Record empty
+            # output and continue with next input rather than aborting.
+            engine, model, output = "ollama", "unknown", ""
+            engine_error = str(e)
+            print(f"      ⚠️  engine error: {engine_error[:200]}")
         if judge is None:
-            verdict = JudgeVerdict(passed=False, scores={}, reasons=["dry-run"], suggested_template=None, raw_response="")
+            verdict = JudgeVerdict(passed=False, scores={}, reasons=["dry-run"] if engine_error is None else [f"engine error: {engine_error}"], suggested_template=None, raw_response="")
         else:
             verdict = judge.judge(entry.meta, user_input, output)
         report.results.append(EvalResult(
@@ -449,16 +470,20 @@ def _select_targets(preset: str, category: str | None) -> list[PresetEntry]:
             if category and cat_slug != category:
                 continue
             targets.append(load_preset(cat_slug, slug))
-    else:
+        return targets
+    # Comma-separated multiple slugs supported.
+    requested = [s.strip() for s in preset.split(",") if s.strip()]
+    available = discover_presets()
+    for slug_request in requested:
         matches = [
             (cat_slug, slug)
-            for cat_slug, slug in discover_presets()
-            if slug == preset and (category is None or cat_slug == category)
+            for cat_slug, slug in available
+            if slug == slug_request and (category is None or cat_slug == category)
         ]
         if not matches:
             raise SystemExit(
-                f"Preset '{preset}' not found. Available:\n"
-                + "\n".join(f"  {c}/{s}" for c, s in discover_presets())
+                f"Preset '{slug_request}' not found. Available:\n"
+                + "\n".join(f"  {c}/{s}" for c, s in available)
             )
         for cat_slug, slug in matches:
             targets.append(load_preset(cat_slug, slug))

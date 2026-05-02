@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "generated_at": "2026-05-02T17:00:28+0200",
+  "reports": [
+    {
+      "preset_slug": "improve-prompt",
+      "preset_name": "Improve Prompt",
+      "results": [
+        {
+          "case_id": "improve-prompt:1",
+          "user_input": "mach mir mal nen kurzen sketch wie wir die landing page neu strukturieren können",
+          "engine": "ollama",
+          "model": "gemma4:e2b-it-q4_K_M",
+          "model_output": "Du bist ein erfahrener UX- und Webdesign-Architekt. Deine Aufgabe ist es, einen strukturierten Entwurf vorzulegen, wie eine Landingpage neu strukturiert werden kann. Bitte halte dich an die folgenden Regeln: Der Entwurf muss sich ausschließlich auf die Informationsarchitektur und die Benutzerfreundlichkeit konzentrieren. Vermeide jegliche Spezifikationen bezüglich Technologie oder Designelemente. Berücksichtige dabei die Notwendigkeit, die Kernbotschaft schnell zu vermitteln und die Conversion zu optimieren. Das gewünschte Ergebnis ist ein klar strukturierter Textentwurf."
+        },
+        {
+          "case_id": "improve-prompt:2",
+          "user_input": "write a function that handles user login",
+          "engine": "ollama",
+          "model": "gemma4:e2b-it-q4_K_M",
+          "model_output": "You are a senior software developer specializing in secure application logic.\nThe goal is to write a complete and robust function that handles user login.\nConstraints: The function must be designed to handle input validation, secure password storage (using hashing), and appropriate error handling for failed logins. It must accept username and password inputs and return a boolean indicating successful authentication. Do not include any external dependencies or specific frameworks unless requested.\nThe output should be the complete function implementation along with clear comments explaining the logic and security considerations."
+        },
+        {
+          "case_id": "improve-prompt:3",
+          "user_input": "ich brauche einen prompt der mir hilft, gute commit messages zu schreiben für deutsche projekte mit gemischtem code",
+          "engine": "ollama",
+          "model": "gemma4:e2b-it-q4_K_M",
+          "model_output": "Du bist ein Senior Softwareentwickler und Git-Experte mit Spezialisierung auf die Erstellung von Commit Messages. Deine Aufgabe ist es, den Benutzer dabei zu unterstützen, präzise, informative und konventionelle Commit Messages für Softwareprojekte zu verfassen.\n\nDas Ziel ist es, basierend auf dem bereitgestellten Code-Kontext oder der Beschreibung eine hochwertige Commit Message zu generieren, die speziell die Konventionen und den sprachlichen Kontext deutscher Projekte berücksichtigt.\n\nDie folgenden Einschränkungen müssen strikt beachtet werden:\n1. Die generierten Commit Messages müssen dem konventionellen Format (z.B. Conventional Commits) folgen.\n2. Die Sprache der Commit Messages muss Deutsch sein.\n3. Du musst die Komplexität gemischten Codes und die spezifische Natur deutscher Projektkommunikation berücksichtigen.\n4. Bei unklaren oder sehr kurzen Eingaben musst du klare und spezifische Vorschläge machen, um Ambiguitäten zu vermeiden.\n\nDas gewünschte Ausgabeformat ist eine direkte, formatierte Commit Message in deutscher Sprache."
+        },
+        {
+          "case_id": "improve-prompt:4",
+          "user_input": "generate a system that scans GitHub PRs for security issues and posts comments",
+          "engine": "ollama",
+          "model": "gemma4:e2b-it-q4_K_M",
+          "model_output": "You are a senior software architect specializing in automated security tooling and API integration.\nThe goal is to design a functional system for automatically scanning GitHub Pull Requests for potential security issues and posting relevant comments.\nConstraints: The system must interact with the GitHub API to fetch PR data and post comments, and it must operate without requiring manual intervention after setup. The system must prioritize identifying common security vulnerabilities and must handle cases where API access or comment posting fails.\nDesired output format is a detailed system design outline covering the required components, data flow, API considerations, and error handling strategies."
+        },
+        {
+          "case_id": "improve-prompt:5",
+          "user_input": "so jetzt müssen wir mal kurz schauen ob die docker container alle laufen, kannst du mir das per script abnehmen",
+          "engine": "ollama",
+          "model": "gemma4:e2b-it-q4_K_M",
+          "model_output": "Du bist ein Systemadministrator, spezialisiert auf Linux-Skripte. Deine Aufgabe ist es, ein Shell-Skript zu erstellen, das den Status aller aktiven Docker-Container überprüft. Das Skript soll die Ergebnisse in einem leicht lesbaren Format ausgeben. Achte darauf, dass das Skript robuste Fehlerbehandlung beinhaltet, falls Docker-Befehle fehlschlagen oder Container nicht erreichbar sind. Das gewünschte Ergebnis ist das vollständige, ausführbare Skript."
+        }
+      ],
+      "template": "You are converting a user's rough draft into a precise prompt for an AI assistant.\n\nA good \"improved prompt\" has all of these:\n1. Names a fitting assistant role at the start (e.g. \"You are a senior Swift engineer …\").\n2. States the goal in one direct sentence.\n3. Lists 2-4 specific constraints, facts, or edge cases the assistant should respect. Do NOT invent constraints that aren't implied by the draft. Specifically: never pick a programming language, framework, library, or technology stack unless the user named one. If the draft doesn't suggest constraints, list at least 2 obvious failure modes the assistant should handle.\n4. Names the desired output format (length, structure, tone) — but stay neutral on implementation choice.\n5. Stays in the user's language — German stays German, English stays English.\n\nIf the user's draft is short, vague, or conversational, EXPAND it. Add the missing role / goal / output spec yourself based on what the user clearly wants. Do NOT just reword the draft into the same length.\n\nOutput rules:\n- Return ONLY the improved prompt — one block of plain text, ready to send to an assistant.\n- No preamble, no commentary, no code fences, no quotation marks around the result.\n- Do not echo the user's original draft.\n\nUser's rough draft:\n{{text}}"
+    },
+    {
+      "preset_slug": "make-prompt-negotiable",
+      "preset_name": "Make Prompt Negotiable",
+      "results": [
+        {
+          "case_id": "make-prompt-negotiable:1",
+          "user_input": "Schreibe eine komplette Authentication-Lösung mit OAuth2, JWT, Refresh-Tokens und Rate-Limiting für unser Backend. Soll heute fertig sein.",
+          "engine": "ollama",
+          "model": "gemma4:e2b-it-q4_K_M",
+          "model_output": "Bitte stellen Sie vor der Erstellung einer vollständigen Implementierung einer Authentifizierungslösung mit OAuth2, JWT, Refresh-Tokens und Rate-Limiting für unser Backend alle notwendigen Klarstellungen bereit. Insbesondere benötigen wir die genaue Angabe des zu verwendenden Technologie-Stacks (z.B. Programmiersprache, Framework, Datenbank), die Anforderungen an die Skalierbarkeit und die Art der Rate-Limiting-Implementierung sowie eine realistische Einschätzung des Zeitrahmens, da die Anforderung, dies heute fertigzustellen, ohne diese Details nicht umsetzbar ist."
+        },
+        {
+          "case_id": "make-prompt-negotiable:2",
+          "user_input": "build me an MVP for a marketplace app like Etsy but for digital art",
+          "engine": "ollama",
+          "model": "gemma4:e2b-it-q4_K_M",
+          "model_output": "I need to build an MVP for a marketplace application focused on digital art, similar in structure to Etsy. Before starting the development, you must first ask clarifying questions regarding the scope, target platform, required features (e.g., payment integration, listing management, community features), and proposed technology stack. You must wait for my answers to these questions before generating any design or development plan."
+        },
+        {
+          "case_id": "make-prompt-negotiable:3",
+          "user_input": "setup ci",
+          "engine": "ollama",
+          "model": "gemma4:e2b-it-q4_K_M",
+          "model_output": "Before executing any technical task, if the request is ambiguous, risky, or under-specified, you must first push back, ask clarifying questions, or propose viable alternatives. You must wait for the user to address these questions before proceeding with the execution of the requested task."
+        }
+      ],
+      "template": "Rewrite the prompt below into a SINGLE new prompt that asks the AI to first push back, ask clarifying questions, or propose alternatives whenever the request is ambiguous, risky, or under-specified — and to proceed only after those questions are addressed.\n\nThe rewritten prompt must:\n- Be a single new prompt, NOT the original prompt with a meta-instruction prepended.\n- Preserve the user's goal verbatim in spirit (not necessarily wording).\n- Stay in the user's language.\n- Spell out at least one concrete trigger for clarification (e.g. deadline pressure, missing scope, ambiguous tech choice).\n\nIf the user's draft is very short or vague (e.g. \"setup ci\"), still produce a single rewritten prompt that names the goal and adds the clarification-first behaviour — do NOT return only a generic meta-instruction.\n\nReturn only the rewritten prompt.\n\n{{text}}"
+    },
+    {
+      "preset_slug": "polish-with-claude-code-context",
+      "preset_name": "Polish (with Claude Code context)",
+      "results": [
+        {
+          "case_id": "polish-with-claude-code-context:1",
+          "user_input": "okay jetzt füg auch noch tests dazu",
+          "engine": "ollama",
+          "model": "gemma4:e2b-it-q4_K_M",
+          "model_output": "füge nun Tests hinzu."
+        },
+        {
+          "case_id": "polish-with-claude-code-context:2",
+          "user_input": "now also handle the empty input case",
+          "engine": "ollama",
+          "model": "gemma4:e2b-it-q4_K_M",
+          "model_output": "handle also the empty input case"
+        },
+        {
+          "case_id": "polish-with-claude-code-context:3",
+          "user_input": "und make it dark mode",
+          "engine": "ollama",
+          "model": "gemma4:e2b-it-q4_K_M",
+          "model_output": "Apply the 6 suggested template fixes and then re-evaluate the affected Presets, applying the dark mode theme to the results."
+        }
+      ],
+      "template": "You are improving a follow-up prompt that the user is about to send to a coding assistant.\n\nIf recent assistant replies are provided below, use them as conversational context — they describe where the conversation currently stands. Sharpen the user's prompt so it picks up that context naturally: reference concrete things from those replies when helpful, drop vague filler.\n\nIf the recent-replies block is empty or absent, do NOT invent context. Just sharpen the user's prompt on its own — make it more specific, drop filler, fix grammar.\n\nALWAYS preserve the user's language: German prompt → German output, English prompt → English output. Never translate. If the user's prompt mixes German and English (e.g. \"und make it dark mode\"), keep the dominant language.\n\nReturn only the improved prompt — no preamble, no commentary.\n\nRecent assistant replies (oldest first, most recent last):\n{{cc_recent_assistant_all}}\n\nUser prompt to improve:\n{{text}}"
+    },
+    {
+      "preset_slug": "write-claude-md-rule",
+      "preset_name": "Write CLAUDE.md Rule",
+      "results": [
+        {
+          "case_id": "write-claude-md-rule:1",
+          "user_input": "claude soll nicht mehr mocks in tests verwenden weil wir letzte woche einen migration-bug deswegen erst in prod gefunden haben, integration-tests sollen echten datenbank treffen",
+          "engine": "ollama",
+          "model": "gemma4:e2b-it-q4_K_M",
+          "model_output": "Claude soll keine Mocks in Tests verwenden.\nWarum: Mocks führten zu einem Migration-Bug, der erst in der Produktion entdeckt wurde.\nWie anwenden: Integrationstests müssen mit einer echten Datenbank interagieren."
+        },
+        {
+          "case_id": "write-claude-md-rule:2",
+          "user_input": "stop summarizing what you just did at the end of every response, I can read the diff myself",
+          "engine": "ollama",
+          "model": "gemma4:e2b-it-q4_K_M",
+          "model_output": "Rule: Do not include summaries of previous actions or changes at the end of any response.\nWhy: The user is able to review the diff and context independently.\nHow to apply: Omit trailing summaries to ensure the output is only the requested content."
+        },
+        {
+          "case_id": "write-claude-md-rule:3",
+          "user_input": "immer absolute pfade",
+          "engine": "ollama",
+          "model": "gemma4:e2b-it-q4_K_M",
+          "model_output": "Immer absolute Pfade verwenden.\nWarum: Die Verwendung absoluter Pfade ist eine zwingende Anforderung.\nWie anwenden: Diese Regel gilt für alle generierten Pfade."
+        }
+      ],
+      "template": "You are converting the user's note into a properly structured CLAUDE.md feedback rule.\nThe note describes how the user wants Claude to behave (or stop behaving) on this project: {{cc_project_name}}.\n\nOutput requirements:\n- Lead with the rule itself in clear, imperative form (one or two short sentences).\n- Add a \"**Why:**\" line explaining the reason — often a past incident, a strong preference, or a constraint.\n- Add a \"**How to apply:**\" line explaining when/where this guidance kicks in.\n- Match the tone of typical CLAUDE.md rules: concise, specific, actionable.\n- ALL three lines must be in the SAME language as the user's note. If the note is German, every line including the labels must be German — translate them to \"**Warum:**\" and \"**Wie anwenden:**\". Same for any other source language.\n\nPreserve the user's language. Return ONLY the structured rule block, ready to paste into a CLAUDE.md file. No preamble, no commentary, no code fences.\n\nUser note:\n{{text}}"
+    },
+    {
+      "preset_slug": "write-memory-entry",
+      "preset_name": "Write Memory Entry",
+      "results": [
+        {
+          "case_id": "write-memory-entry:1",
+          "user_input": "uli ist senior data engineer und arbeitet seit zehn jahren mit airflow, kafka und dbt; aktuell baut er die analytics-pipeline für ein fintech-startup neu auf",
+          "engine": "ollama",
+          "model": "gemma4:e2b-it-q4_K_M",
+          "model_output": "---\nname: uli\ndescription: Senior data engineer specializing in Airflow, Kafka, dbt, and building analytics pipelines for fintech startups.\ntype: user\n---\n\nUli is a senior data engineer with ten years of experience working with Airflow, Kafka, and dbt. He is currently rebuilding the analytics pipeline for a fintech startup."
+        },
+        {
+          "case_id": "write-memory-entry:2",
+          "user_input": "weekly merge freeze starts every Thursday at 5pm because the mobile team cuts release branches Friday morning",
+          "engine": "ollama",
+          "model": "gemma4:e2b-it-q4_K_M",
+          "model_output": "---\nname: Weekly Merge Freeze Schedule\ndescription: Defines the schedule and rationale for the weekly merge freeze.\ntype: project\n---\n\nThe weekly merge freeze starts every Thursday at 5 PM.\n**Why:** This timing is implemented because the mobile team cuts release branches on Friday morning.\n**How to apply:** Ensure all merge activities are completed before the Thursday 5 PM deadline to accommodate the mobile team's workflow."
+        },
+        {
+          "case_id": "write-memory-entry:3",
+          "user_input": "linear project ID for pipeline bugs",
+          "engine": "ollama",
+          "model": "gemma4:e2b-it-q4_K_M",
+          "model_output": "---\nname: linear project id for pipeline bugs\ndescription: Reference for Linear project IDs related to pipeline bugs.\ntype: reference\n---\n\nThe reference is needed for finding the Linear project ID associated with pipeline bugs."
+        }
+      ],
+      "template": "You are converting the user's note into a properly structured Claude Code memory entry for project: {{cc_project_name}}.\n\nDecide which type fits best:\n- user — details about the user's role, preferences, or knowledge\n- feedback — corrections or validated approaches Claude should remember\n- project — facts or decisions about the current project\n- reference — pointers to external systems or documentation (e.g. \"bugs are tracked in Linear project X\", \"Grafana dashboard at URL\")\n\nCAREFUL with capitalised proper nouns: \"Linear\" usually refers to the project-management tool (linear.app), not to \"linear/sequential\" — treat as `reference` type pointing at that tool. Same for tool names like \"Notion\", \"Slack\", \"GitHub\", \"Figma\", etc.\n\nIMPORTANT — the output MUST start with three dashes (---) on the very first line, then the YAML frontmatter, then three dashes again, then a blank line, then the body. Like this exactly:\n\n---\nname: <short kebab-or-space name>\ndescription: <one-line description for relevance matching>\ntype: <one of: user | feedback | project | reference>\n---\n\n<body>\n\nBody guidance:\n- For user and reference types, keep the body short and factual (1-2 sentences). Do NOT just echo the user's note — distill it.\n- For feedback and project types, structure as: rule or fact, then a \"**Why:**\" line and a \"**How to apply:**\" line.\n\nPreserve the user's language. Return ONLY the frontmatter+body block, ready to save as a memory file. No preamble, no commentary, no code fences.\n\nUser note:\n{{text}}"
+    },
+    {
+      "preset_slug": "plain-language",
+      "preset_name": "Plain Language",
+      "results": [
+        {
+          "case_id": "plain-language:1",
+          "user_input": "Aufgrund der Implementierung der neuen DSGVO-konformen Datenverarbeitungsrichtlinien müssen alle Kundeninteraktionen, die im Rahmen unserer Customer-Success-Aktivitäten stattfinden, fortan einer doppelten Verifikation unterzogen werden, bevor personenbezogene Daten in unsere Analyseplattform übertragen werden dürfen.",
+          "engine": "ollama",
+          "model": "gemma4:e2b-it-q4_K_M",
+          "model_output": "Wegen der neuen DSGVO-Regeln für die Datenverarbeitung müssen wir eine neue Regelung einhalten. Alle Kundeninteraktionen, die während unserer Customer Success Aktivitäten stattfinden, müssen jetzt doppelt überprüft werden. Erst danach dürfen personenbezogene Daten in unsere Analyseplattform übertragen werden."
+        },
+        {
+          "case_id": "plain-language:2",
+          "user_input": "Pursuant to the recently ratified amendments to our service-level agreement, all instances of degraded performance exceeding the contractually delineated thresholds shall henceforth be subject to a remediation protocol involving cross-functional incident response teams convened within a 30-minute aperture from initial detection.",
+          "engine": "ollama",
+          "model": "gemma4:e2b-it-q4_K_M",
+          "model_output": "Based on the recent changes to our service agreement, any performance that goes beyond the agreed limits must follow a repair plan. This plan involves teams from different departments. These teams must start within 30 minutes of when the problem is first detected."
+        },
+        {
+          "case_id": "plain-language:3",
+          "user_input": "Lol das ist krass.",
+          "engine": "ollama",
+          "model": "gemma4:e2b-it-q4_K_M",
+          "model_output": "Das ist sehr beeindruckend."
+        }
+      ],
+      "template": "Rewrite the selected text in plain language at roughly B1 reading level.\nUse short sentences and common words. Avoid jargon, idioms, and complex grammar.\n\nLanguage rule (critical): keep the user's language. If the input is German, the output must be German — even slang, idioms, and casual expressions must be translated into plain German, NOT into English. Same for any other source language.\n\nPreserve all facts. Return only the rewritten text.\n\n{{text}}"
+    }
+  ]
+}

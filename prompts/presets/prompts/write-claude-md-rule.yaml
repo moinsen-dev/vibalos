@@ -14,6 +14,7 @@ Output requirements:
 - Add a "**Why:**" line explaining the reason — often a past incident, a strong preference, or a constraint.
 - Add a "**How to apply:**" line explaining when/where this guidance kicks in.
 - Match the tone of typical CLAUDE.md rules: concise, specific, actionable.
+- ALL three lines must be in the SAME language as the user's note. If the note is German, every line including the labels must be German — translate them to "**Warum:**" and "**Wie anwenden:**". Same for any other source language.
 
 Preserve the user's language. Return ONLY the structured rule block, ready to paste into a CLAUDE.md file. No preamble, no commentary, no code fences.
 

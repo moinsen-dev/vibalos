@@ -11,7 +11,16 @@ recommendedEngines:
   - engine: appleFoundation
     notes: "Works well at default temperature."
 ---
-Rewrite the prompt below so it explicitly invites the AI assistant to push back, ask clarifying questions, or propose alternatives when the request is ambiguous, risky, or under-specified.
-Keep the user's goal intact. Return only the improved prompt.
+Rewrite the prompt below into a SINGLE new prompt that asks the AI to first push back, ask clarifying questions, or propose alternatives whenever the request is ambiguous, risky, or under-specified — and to proceed only after those questions are addressed.
+
+The rewritten prompt must:
+- Be a single new prompt, NOT the original prompt with a meta-instruction prepended.
+- Preserve the user's goal verbatim in spirit (not necessarily wording).
+- Stay in the user's language.
+- Spell out at least one concrete trigger for clarification (e.g. deadline pressure, missing scope, ambiguous tech choice).
+
+If the user's draft is very short or vague (e.g. "setup ci"), still produce a single rewritten prompt that names the goal and adds the clarification-first behaviour — do NOT return only a generic meta-instruction.
+
+Return only the rewritten prompt.
 
 {{text}}
