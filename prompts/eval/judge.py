@@ -1,8 +1,17 @@
 """Claude-as-judge wrapper for preset output evaluation.
 
-Sends (preset metadata, user input, model output) to Claude Sonnet,
-gets back a structured verdict: pass/fail per criterion plus optional
-suggested template fix.
+Two backends:
+
+- `ClaudeCodeJudge` (default): shells out to the local `claude` CLI in
+  --bare --print mode. Uses the user's existing Claude Code session,
+  no API key needed. Slower per-call (~2-4s startup) but free for the
+  user.
+
+- `AnthropicAPIJudge`: direct Anthropic API via the `anthropic` SDK.
+  Requires ANTHROPIC_API_KEY env var. Fast, but billed.
+
+Both submit the same judge prompt and return the same `JudgeVerdict`
+shape so the runner doesn't care which backend is in use.
 """
 
 from __future__ import annotations
@@ -10,16 +19,15 @@ from __future__ import annotations
 import json
 import os
 import re
+import subprocess
 from dataclasses import dataclass, field
 from typing import Optional
 
 try:
-    import anthropic
-except ImportError as e:
-    raise SystemExit(
-        "Missing dependency: anthropic. Install with:\n"
-        "  pip3 install -r prompts/eval/requirements.txt"
-    ) from e
+    import anthropic  # type: ignore
+    _ANTHROPIC_AVAILABLE = True
+except ImportError:
+    _ANTHROPIC_AVAILABLE = False
 
 
 JUDGE_MODEL = "claude-sonnet-4-6"
@@ -109,8 +117,30 @@ class PresetMeta:
     writing_style: str = "default"
 
 
-class ClaudeJudge:
+def _build_judge_prompt(preset: PresetMeta, user_input: str, model_output: str) -> str:
+    return JUDGE_PROMPT_TEMPLATE.format(
+        preset_name=preset.name,
+        template=preset.template,
+        tag_mode=preset.tag_mode,
+        emoji_usage=preset.emoji_usage,
+        language_mode=preset.language_mode,
+        tone=preset.tone,
+        tone_intensity=preset.tone_intensity,
+        writing_style=preset.writing_style,
+        user_input=user_input,
+        model_output=model_output,
+    )
+
+
+class AnthropicAPIJudge:
+    """Anthropic-API-backed judge. Requires ANTHROPIC_API_KEY."""
+
     def __init__(self, api_key: Optional[str] = None, model: str = JUDGE_MODEL) -> None:
+        if not _ANTHROPIC_AVAILABLE:
+            raise SystemExit(
+                "anthropic SDK not installed. Install with:\n"
+                "  pip3 install -r prompts/eval/requirements.txt"
+            )
         api_key = api_key or os.environ.get("ANTHROPIC_API_KEY")
         if not api_key:
             raise SystemExit(
@@ -120,29 +150,15 @@ class ClaudeJudge:
         self.model = model
 
     def judge(self, preset: PresetMeta, user_input: str, model_output: str) -> JudgeVerdict:
-        prompt = JUDGE_PROMPT_TEMPLATE.format(
-            preset_name=preset.name,
-            template=preset.template,
-            tag_mode=preset.tag_mode,
-            emoji_usage=preset.emoji_usage,
-            language_mode=preset.language_mode,
-            tone=preset.tone,
-            tone_intensity=preset.tone_intensity,
-            writing_style=preset.writing_style,
-            user_input=user_input,
-            model_output=model_output,
-        )
-
+        prompt = _build_judge_prompt(preset, user_input, model_output)
         resp = self.client.messages.create(
             model=self.model,
             max_tokens=1024,
             system=JUDGE_SYSTEM,
             messages=[{"role": "user", "content": prompt}],
         )
-
         text = "".join(block.text for block in resp.content if block.type == "text").strip()
         parsed = _extract_json(text)
-
         return JudgeVerdict(
             passed=bool(parsed.get("pass", False)),
             scores=parsed.get("scores", {}),
@@ -150,6 +166,92 @@ class ClaudeJudge:
             suggested_template=parsed.get("suggested_template"),
             raw_response=text,
         )
+
+
+class ClaudeCodeJudge:
+    """DEPRECATED. Subprocess-shelling out to `claude --print` is too
+    expensive (each invocation re-creates the Claude Code system
+    context, ~$0.30+ per call) and `--bare` mode requires explicit
+    ANTHROPIC_API_KEY — defeating the "free for the user" goal.
+
+    Use the briefing/verdicts workflow instead: run `--emit-briefing`,
+    paste the resulting Markdown into a Claude Code chat, save the
+    JSON response to verdicts.json, then run `--apply-verdicts` to
+    finalize the report. See run.py docstring for the recipe.
+    """
+
+    def __init__(self, claude_binary: str = "claude", timeout: float = 120.0) -> None:
+        self.claude_binary = claude_binary
+        self.timeout = timeout
+
+    def judge(self, preset: PresetMeta, user_input: str, model_output: str) -> JudgeVerdict:
+        prompt = _build_judge_prompt(preset, user_input, model_output)
+        cmd = [
+            self.claude_binary,
+            "--bare",
+            "--print",
+            "--output-format", "json",
+            "--append-system-prompt", JUDGE_SYSTEM,
+            prompt,
+        ]
+        try:
+            result = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=self.timeout,
+                check=False,
+            )
+        except FileNotFoundError as e:
+            raise SystemExit(
+                f"claude CLI not found ({self.claude_binary}). "
+                "Install Claude Code or pass --judge=anthropic-api with an API key."
+            ) from e
+        except subprocess.TimeoutExpired as e:
+            raise RuntimeError(f"claude CLI timed out after {self.timeout}s") from e
+
+        if result.returncode != 0:
+            raise RuntimeError(
+                f"claude CLI exited {result.returncode}\nstderr: {result.stderr[:500]}"
+            )
+
+        # `--output-format json` returns a result envelope. The actual
+        # judge response is in the `result` field as a string (which
+        # we then parse as JSON ourselves).
+        try:
+            envelope = json.loads(result.stdout)
+        except json.JSONDecodeError as e:
+            raise RuntimeError(
+                f"claude CLI did not return valid JSON envelope: {e}\nRaw: {result.stdout[:500]}"
+            )
+
+        if envelope.get("is_error"):
+            raise RuntimeError(f"claude CLI returned error envelope: {envelope.get('result', envelope)}")
+
+        verdict_text = envelope.get("result", "")
+        parsed = _extract_json(verdict_text)
+        return JudgeVerdict(
+            passed=bool(parsed.get("pass", False)),
+            scores=parsed.get("scores", {}),
+            reasons=parsed.get("reasons", []),
+            suggested_template=parsed.get("suggested_template"),
+            raw_response=verdict_text,
+        )
+
+
+def make_judge(backend: str = "claude-code", api_key: Optional[str] = None) -> "AnthropicAPIJudge | ClaudeCodeJudge":
+    """Factory for the runner. Default is the local Claude Code CLI."""
+    if backend == "claude-code":
+        return ClaudeCodeJudge()
+    if backend in ("anthropic", "anthropic-api", "api"):
+        return AnthropicAPIJudge(api_key=api_key)
+    raise SystemExit(f"Unknown judge backend: {backend}. Choose 'claude-code' or 'anthropic-api'.")
+
+
+# Legacy alias — old callers used `ClaudeJudge` for the Anthropic SDK
+# path. Keep it pointing to AnthropicAPIJudge so any external scripts
+# don't break.
+ClaudeJudge = AnthropicAPIJudge
 
 
 def _extract_json(text: str) -> dict:

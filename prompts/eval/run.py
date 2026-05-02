@@ -38,10 +38,10 @@ except ImportError:
 # Allow running this file directly (`python3 prompts/eval/run.py`) by
 # falling back to absolute imports relative to the repo root.
 try:
-    from .judge import ClaudeJudge, JudgeVerdict, PresetMeta
+    from .judge import JudgeVerdict, PresetMeta, make_judge
 except ImportError:
     sys.path.insert(0, str(Path(__file__).resolve().parent))
-    from judge import ClaudeJudge, JudgeVerdict, PresetMeta  # type: ignore
+    from judge import JudgeVerdict, PresetMeta, make_judge  # type: ignore
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -202,7 +202,7 @@ class EvalReport:
         return self.passed / self.total if self.total else 0.0
 
 
-def run_eval_for_preset(entry: PresetEntry, judge: ClaudeJudge | None, bridge_url: str, max_inputs: int | None = None) -> EvalReport:
+def run_eval_for_preset(entry: PresetEntry, judge, bridge_url: str, max_inputs: int | None = None) -> EvalReport:
     inputs = load_corpus(entry.category_slug, entry.slug)
     if max_inputs is not None:
         inputs = inputs[:max_inputs]
@@ -243,6 +243,150 @@ def run_eval_for_preset(entry: PresetEntry, judge: ClaudeJudge | None, bridge_ur
                     print(f"        → {r}")
 
     return report
+
+
+# -- Briefing / state / verdicts (paste-judge workflow) ----------------------
+
+
+VERDICTS_SCHEMA_DOC = """\
+Return ONLY a JSON object of this shape:
+{
+  "verdicts": [
+    {
+      "case_id": "<the case_id from the briefing>",
+      "pass": <bool>,
+      "scores": {
+        "faithfulness": <int 0-5>,
+        "no_leak": <int 0-5>,
+        "language_match": <int 0-5>,
+        "intent_match": <int 0-5>,
+        "structure": <int 0-5>
+      },
+      "reasons": [<short strings, one per criterion that scored <4>],
+      "suggested_template": <string or null>
+    }
+  ]
+}
+
+Pass criteria:
+- All 5 scores >= 3
+- No hard fail: output didn't echo the template/style block, language is right,
+  output isn't empty, no emoji when emojiUsage=off, no hashtags when tagMode=off
+
+If pass=false, optionally provide a `suggested_template` rewrite. Keep
+`{{text}}` literally inside it. Only suggest a rewrite if confident; else null.
+"""
+
+
+def engine_state_dict(reports: list[EvalReport]) -> dict:
+    """Machine-readable state captured after the engine runs but
+    before the verdicts are known. Round-trips via JSON so the user
+    can store it, judge separately, then resume."""
+    return {
+        "version": 1,
+        "generated_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+        "reports": [
+            {
+                "preset_slug": r.preset_slug,
+                "preset_name": r.preset_name,
+                "results": [
+                    {
+                        "case_id": f"{r.preset_slug}:{i+1}",
+                        "user_input": result.user_input,
+                        "engine": result.engine,
+                        "model": result.model,
+                        "model_output": result.model_output,
+                    }
+                    for i, result in enumerate(r.results)
+                ],
+            }
+            for r in reports
+        ],
+    }
+
+
+def briefing_markdown(reports: list[EvalReport], engine_state: dict) -> str:
+    """Paste-ready briefing for Claude Code as judge. Includes the
+    schema doc + all cases. Claude reads this and returns
+    verdicts.json."""
+    out = []
+    out.append("# Vibalos preset eval — paste this to Claude Code\n")
+    out.append(
+        "You are evaluating polish-preset outputs. Score each `case` "
+        "against the preset's `template`. Use the rubric in the schema."
+    )
+    out.append("\n## Schema\n")
+    out.append("```")
+    out.append(VERDICTS_SCHEMA_DOC.strip())
+    out.append("```")
+
+    out.append("\n## Cases\n")
+    for r in reports:
+        for i, result in enumerate(r.results):
+            case_id = f"{r.preset_slug}:{i+1}"
+            out.append(f"### case `{case_id}` — {r.preset_name}\n")
+            out.append(f"**Engine:** {result.engine} / {result.model}\n")
+            # The preset template is the same for every case in a
+            # report, so include it once at the case level for
+            # convenience.
+            out.append("**Template:**")
+            out.append("```")
+            # Find the original PresetMeta for this preset — quickest
+            # via re-loading. But we don't have it here. Embed the
+            # template by looking it up in engine_state if present.
+            # For now, look it up from the corpus loader.
+            # (We re-derive PresetMeta in apply_verdicts side too.)
+            out.append("(see prompts/presets/<category>/" + r.preset_slug + ".yaml)")
+            out.append("```")
+            out.append(f"**User input:**")
+            out.append("```")
+            out.append(result.user_input)
+            out.append("```")
+            out.append(f"**Model output:**")
+            out.append("```")
+            out.append(result.model_output)
+            out.append("```")
+            out.append("")
+    return "\n".join(out) + "\n"
+
+
+def apply_verdicts(reports: list[EvalReport], verdicts_data: dict) -> None:
+    """Mutate `reports` in-place by attaching the verdicts from a
+    Claude-Code-produced JSON."""
+    by_case = {v["case_id"]: v for v in verdicts_data.get("verdicts", [])}
+    for r in reports:
+        for i, result in enumerate(r.results):
+            case_id = f"{r.preset_slug}:{i+1}"
+            v = by_case.get(case_id)
+            if v is None:
+                # Leave dry-run sentinel; user might have judged a subset
+                continue
+            result.verdict = JudgeVerdict(
+                passed=bool(v.get("pass", False)),
+                scores=v.get("scores", {}),
+                reasons=v.get("reasons", []),
+                suggested_template=v.get("suggested_template"),
+                raw_response="",
+            )
+
+
+def reports_from_state(state: dict, presets_by_slug: dict[str, PresetEntry]) -> list[EvalReport]:
+    """Reconstruct EvalReport list from a saved engine_state dict."""
+    out: list[EvalReport] = []
+    for r in state.get("reports", []):
+        report = EvalReport(preset_slug=r["preset_slug"], preset_name=r["preset_name"])
+        for c in r.get("results", []):
+            report.results.append(EvalResult(
+                preset_name=r["preset_name"],
+                preset_slug=r["preset_slug"],
+                user_input=c["user_input"],
+                engine=c["engine"],
+                model=c["model"],
+                model_output=c["model_output"],
+                verdict=JudgeVerdict(passed=False, scores={}, reasons=["pending"], suggested_template=None, raw_response=""),
+            ))
+        out.append(report)
+    return out
 
 
 # -- Report formatting ---------------------------------------------------------
@@ -298,55 +442,171 @@ def report_to_markdown(reports: list[EvalReport]) -> str:
 # -- CLI -----------------------------------------------------------------------
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--preset", default="all", help="Preset slug (e.g. improve-prompt) or 'all'")
-    parser.add_argument("--category", default=None, help="Limit to a category slug (e.g. prompts). Ignored when --preset is set explicitly.")
-    parser.add_argument("--max-inputs", type=int, default=None, help="Cap inputs per preset")
-    parser.add_argument("--bridge-url", default=DEFAULT_BRIDGE_URL, help="Vibalos moinsen bridge URL")
-    parser.add_argument("--output", default=None, help="Write Markdown report to this path (default: stdout)")
-    parser.add_argument("--dry-run", action="store_true", help="Run engine only, skip Claude judge (no API key needed)")
-    args = parser.parse_args()
-
-    judge = None if args.dry_run else ClaudeJudge()
-
+def _select_targets(preset: str, category: str | None) -> list[PresetEntry]:
     targets: list[PresetEntry] = []
-    if args.preset == "all":
+    if preset == "all":
         for cat_slug, slug in discover_presets():
-            if args.category and cat_slug != args.category:
+            if category and cat_slug != category:
                 continue
             targets.append(load_preset(cat_slug, slug))
     else:
-        # Find by slug
         matches = [
             (cat_slug, slug)
             for cat_slug, slug in discover_presets()
-            if slug == args.preset and (args.category is None or cat_slug == args.category)
+            if slug == preset and (category is None or cat_slug == category)
         ]
         if not matches:
-            raise SystemExit(f"Preset '{args.preset}' not found. Available:\n" + "\n".join(f"  {c}/{s}" for c, s in discover_presets()))
+            raise SystemExit(
+                f"Preset '{preset}' not found. Available:\n"
+                + "\n".join(f"  {c}/{s}" for c, s in discover_presets())
+            )
         for cat_slug, slug in matches:
             targets.append(load_preset(cat_slug, slug))
+    return targets
 
+
+def _resolve_output_path(value: str, prefix: str, ext: str) -> Path:
+    p = Path(value)
+    if p.is_dir() or value.endswith("/"):
+        return p / f"{prefix}-{time.strftime('%Y-%m-%d-%H%M%S')}.{ext}"
+    return p
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=(
+            "Evaluate Vibalos polish presets against a corpus of test inputs.\n\n"
+            "Three workflows:\n"
+            "  1. End-to-end with Anthropic API:\n"
+            "     export ANTHROPIC_API_KEY=…\n"
+            "     run.py --preset improve-prompt --judge anthropic-api --output report.md\n"
+            "  2. Engine-only dry run (eyeball outputs, no scoring):\n"
+            "     run.py --preset improve-prompt --dry-run\n"
+            "  3. Manual paste-judge with Claude Code (recommended, no API key):\n"
+            "     a) run.py --preset improve-prompt --emit-briefing eval-out/\n"
+            "        → writes briefing.md + state.json\n"
+            "     b) Paste briefing.md to a Claude Code chat → save its JSON answer\n"
+            "        as verdicts.json\n"
+            "     c) run.py --apply-verdicts eval-out/state.json verdicts.json\n"
+            "                --output report.md\n"
+        ),
+    )
+    parser.add_argument("--preset", default="all", help="Preset slug or 'all'")
+    parser.add_argument("--category", default=None, help="Limit to a category slug (only used with --preset all)")
+    parser.add_argument("--max-inputs", type=int, default=None, help="Cap inputs per preset")
+    parser.add_argument("--bridge-url", default=DEFAULT_BRIDGE_URL, help="Vibalos moinsen bridge URL")
+    parser.add_argument("--output", default=None, help="Write Markdown report to this path (default: stdout)")
+    parser.add_argument("--judge", default="anthropic-api", choices=["anthropic-api"], help="Auto-judge backend (only API path supported; for free/Claude-Code-judge use --emit-briefing)")
+    parser.add_argument("--dry-run", action="store_true", help="Run engine only, skip judging entirely")
+    parser.add_argument("--emit-briefing", default=None, metavar="DIR", help="Run engine, write briefing.md + state.json to DIR for paste-judging by Claude Code")
+    parser.add_argument("--apply-verdicts", nargs=2, metavar=("STATE", "VERDICTS"), default=None, help="Skip engine, read engine state JSON + verdicts JSON, produce final report")
+    args = parser.parse_args()
+
+    # Mode 3 part b: --apply-verdicts STATE VERDICTS → assemble report
+    if args.apply_verdicts is not None:
+        state_path, verdicts_path = args.apply_verdicts
+        state = json.loads(Path(state_path).read_text())
+        verdicts = json.loads(Path(verdicts_path).read_text())
+        # Re-derive PresetEntry index for slug→meta lookup. Needed
+        # for some edge cases; report rendering doesn't actually use
+        # it, but keep the hook in place for future template-aware
+        # report features.
+        presets_by_slug = {entry.slug: entry for entry in (load_preset(c, s) for c, s in discover_presets())}
+        reports = reports_from_state(state, presets_by_slug)
+        apply_verdicts(reports, verdicts)
+        md = report_to_markdown(reports)
+        if args.output:
+            out_path = _resolve_output_path(args.output, "eval", "md")
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            out_path.write_text(md)
+            print(f"Wrote report to {out_path}")
+        else:
+            print(md)
+        return
+
+    targets = _select_targets(args.preset, args.category)
     print(f"Evaluating {len(targets)} preset{'s' if len(targets) != 1 else ''}…\n")
+
+    auto_judge = None
+    if not args.dry_run and args.emit_briefing is None:
+        auto_judge = make_judge(backend=args.judge)
 
     reports: list[EvalReport] = []
     for entry in targets:
         print(f"➤ {entry.meta.name} ({entry.category_slug}/{entry.slug})")
-        report = run_eval_for_preset(entry, judge, args.bridge_url, max_inputs=args.max_inputs)
+        report = run_eval_for_preset(entry, auto_judge, args.bridge_url, max_inputs=args.max_inputs)
         reports.append(report)
         print()
 
+    if args.emit_briefing is not None:
+        out_dir = Path(args.emit_briefing)
+        out_dir.mkdir(parents=True, exist_ok=True)
+        state = engine_state_dict(reports)
+        # Embed each preset's template into the state so the briefing
+        # can render it inline (judge needs to see it to score).
+        slug_to_template = {entry.slug: entry.meta.template for entry in targets}
+        for r in state["reports"]:
+            r["template"] = slug_to_template.get(r["preset_slug"], "")
+        state_path = out_dir / "state.json"
+        state_path.write_text(json.dumps(state, indent=2, ensure_ascii=False))
+        briefing = _briefing_with_templates(reports, slug_to_template)
+        briefing_path = out_dir / "briefing.md"
+        briefing_path.write_text(briefing)
+        print(f"Wrote engine state to {state_path}")
+        print(f"Wrote paste-ready briefing to {briefing_path}")
+        print()
+        print("Next steps:")
+        print(f"  1. Paste {briefing_path} into a Claude Code chat.")
+        print(f"  2. Save Claude's JSON response as verdicts.json")
+        print(f"  3. Run: python3 prompts/eval/run.py --apply-verdicts {state_path} verdicts.json --output report.md")
+        return
+
     md = report_to_markdown(reports)
     if args.output:
-        out_path = Path(args.output)
-        if out_path.is_dir() or args.output.endswith("/"):
-            out_path = Path(args.output) / f"eval-{time.strftime('%Y-%m-%d-%H%M%S')}.md"
+        out_path = _resolve_output_path(args.output, "eval", "md")
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(md)
         print(f"Wrote report to {out_path}")
     else:
         print(md)
+
+
+def _briefing_with_templates(reports: list[EvalReport], slug_to_template: dict[str, str]) -> str:
+    """Like briefing_markdown but inlines the preset template per
+    case so the judge has everything they need without browsing the
+    repo."""
+    out = []
+    out.append("# Vibalos preset eval — paste this to Claude Code\n")
+    out.append(
+        "You are evaluating polish-preset outputs. Score each `case` "
+        "against the preset's `template`. Use the rubric in the schema."
+    )
+    out.append("\n## Schema\n")
+    out.append("```")
+    out.append(VERDICTS_SCHEMA_DOC.strip())
+    out.append("```")
+    out.append("\n## Cases\n")
+    for r in reports:
+        template = slug_to_template.get(r.preset_slug, "(template missing)")
+        for i, result in enumerate(r.results):
+            case_id = f"{r.preset_slug}:{i+1}"
+            out.append(f"### case `{case_id}` — {r.preset_name}\n")
+            out.append(f"**Engine:** {result.engine} / {result.model}\n")
+            out.append("**Template:**")
+            out.append("```")
+            out.append(template)
+            out.append("```")
+            out.append(f"**User input:**")
+            out.append("```")
+            out.append(result.user_input)
+            out.append("```")
+            out.append(f"**Model output:**")
+            out.append("```")
+            out.append(result.model_output)
+            out.append("```")
+            out.append("")
+    return "\n".join(out) + "\n"
 
 
 if __name__ == "__main__":

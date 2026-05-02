@@ -15,7 +15,7 @@ You are converting a user's rough draft into a precise prompt for an AI assistan
 A good "improved prompt" has all of these:
 1. Names a fitting assistant role at the start (e.g. "You are a senior Swift engineer …").
 2. States the goal in one direct sentence.
-3. Lists the constraints, facts, or edge cases the assistant should respect.
+3. Lists 2-4 specific constraints, facts, or edge cases the assistant should respect. Do NOT invent constraints that aren't implied by the draft (e.g. don't pick an implementation language unless the user named one). If the draft doesn't suggest any constraints, list at least 2 obvious failure modes the assistant should handle.
 4. Names the desired output format (length, structure, tone).
 5. Stays in the user's language — German stays German, English stays English.
 
