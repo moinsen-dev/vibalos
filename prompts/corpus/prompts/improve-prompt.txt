@@ -1,0 +1,13 @@
+# Test inputs for the "Improve Prompt" preset.
+# One input per blank-line-separated block.
+# Cover: short DE, short EN, vague request, German with typos, English with structure.
+
+mach mir mal nen kurzen sketch wie wir die landing page neu strukturieren können
+
+write a function that handles user login
+
+ich brauche einen prompt der mir hilft, gute commit messages zu schreiben für deutsche projekte mit gemischtem code
+
+generate a system that scans GitHub PRs for security issues and posts comments
+
+so jetzt müssen wir mal kurz schauen ob die docker container alle laufen, kannst du mir das per script abnehmen
