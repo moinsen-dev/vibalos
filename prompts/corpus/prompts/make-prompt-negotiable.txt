@@ -1,0 +1,7 @@
+# Make Prompt Negotiable — rewrite a prompt so the AI is invited to push back / clarify
+
+Schreibe eine komplette Authentication-Lösung mit OAuth2, JWT, Refresh-Tokens und Rate-Limiting für unser Backend. Soll heute fertig sein.
+
+build me an MVP for a marketplace app like Etsy but for digital art
+
+setup ci

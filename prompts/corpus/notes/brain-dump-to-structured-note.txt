@@ -1,0 +1,7 @@
+# Brain-Dump to Structured Note — restructure unstructured text into a clean Markdown note
+
+okay also was ich denke ist wir müssen die landing page komplett neu machen weil die conversion so schlecht ist 0,8% letzten monat das ist halt unter aller sau außerdem ladezeit ist auch zu lang chrome lighthouse sagt 6 sekunden lcp das ist katastrophal die mobile experience ist auch broken weil der hero auf safari iOS überlappt und überhaupt ist das design super 2019 wir sollten uns mal stripe dot com oder linear app anschauen wie die das machen ah und dann noch das pricing ist gar nicht mehr aktuell die enterprise tier hat sich geändert seit q2
+
+random thoughts after the customer call: they really like the integration with notion but apparently miss a way to bulk-export the data, also they mentioned other tools they considered including airtable and coda, the reason they chose us is the swift API but they're worried about pricing as their team grows, oh and they want SSO at some point, they're using okta currently, deal size is around 30k annual contract value which is good, decision maker is the head of operations not the IT director surprisingly
+
+also need to refactor that thing

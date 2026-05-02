@@ -1,0 +1,7 @@
+# Add Edge Cases — augment a prompt with edge cases / failure modes / constraints
+
+Schreibe einen Prompt der einen Markdown-zu-PDF-Converter spezifiziert. Der soll Bilder, Tabellen und Codeblöcke korrekt rendern.
+
+Generate a prompt for an AI assistant that helps users plan their weekly meal prep based on dietary preferences and budget.
+
+extract phone numbers from text

@@ -1,0 +1,7 @@
+# Write CLAUDE.md Rule — convert user note into structured project rule
+
+claude soll nicht mehr mocks in tests verwenden weil wir letzte woche einen migration-bug deswegen erst in prod gefunden haben, integration-tests sollen echten datenbank treffen
+
+stop summarizing what you just did at the end of every response, I can read the diff myself
+
+immer absolute pfade

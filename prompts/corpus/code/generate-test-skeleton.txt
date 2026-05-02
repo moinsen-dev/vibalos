@@ -1,0 +1,16 @@
+# Generate Test Skeleton — match language + framework, cover happy path + 1 edge case
+
+func divideEvenly(numerator: Int, denominator: Int) throws -> Int {
+    guard denominator != 0 else { throw MathError.divisionByZero }
+    guard numerator % denominator == 0 else { throw MathError.notEvenlyDivisible }
+    return numerator / denominator
+}
+
+def parse_iso_duration(text: str) -> int:
+    """Parse "PT1H30M" style ISO 8601 durations and return total seconds."""
+    if not text.startswith("PT"):
+        raise ValueError(f"Not an ISO duration: {text!r}")
+    # ... implementation ...
+    return total_seconds
+
+const noop = () => {};

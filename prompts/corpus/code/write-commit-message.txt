@@ -1,0 +1,7 @@
+# Write Commit Message — turn notes/diff description into a conventional-commit-style message
+
+Hab heute den Login-Bug gefixt, der bei leeren Passwörtern den Server gecrasht hat. Validation rein, error response anstatt 500. Plus ein Test der den Fall abdeckt.
+
+refactored the user notification service to support multi-channel delivery (push + email + in-app), added webhook adapter for Slack workspaces, removed dead code from old SMS provider integration
+
+bumped lib version

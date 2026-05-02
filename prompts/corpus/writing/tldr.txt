@@ -1,0 +1,7 @@
+# TL;DR — 1-2 sentences capturing core point + so-what, no filler
+
+In den letzten sechs Monaten haben wir unser Onboarding komplett überarbeitet. Statt eines 45-minütigen Live-Demos mit Sales bekommen Neukunden jetzt einen interaktiven Produkt-Walkthrough, der sich an ihre Rolle anpasst (Admin, Developer, End-User). Die Conversion vom Trial zum Paid stieg von 14% auf 23%, die Time-to-Value sank von durchschnittlich 12 auf 4 Tage, und der Support reportet 30% weniger Onboarding-bezogene Tickets. Die Investition (drei Engineers, zwei Designer, vier Monate) hat sich nach acht Wochen amortisiert.
+
+Last quarter we ran an experiment to remove our pricing page entirely and instead route every visitor to a "talk to sales" form. Hypothesis: high-intent buyers convert better when forced into conversation, and we'd compensate the volume drop with deal size. Result: total revenue dropped 22% even though average contract value rose 35% — the math doesn't work because we lost too many self-serve customers who would never have talked to sales but ended up buying anyway. We restored the pricing page and learned that "channel forcing" is a real risk in PLG models.
+
+we shipped feature X

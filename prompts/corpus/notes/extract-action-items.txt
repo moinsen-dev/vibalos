@@ -1,0 +1,7 @@
+# Extract Action Items — pull `- [ ]` checklist items, owner+deadline inline
+
+Meeting-Notiz: Anna übernimmt das Onboarding-Redesign bis Ende des Monats. Lukas spricht diese Woche mit Stripe-Support wegen der Webhooks. Wir müssen außerdem die Compliance-Doku aktualisieren, das macht Sarah sobald sie aus dem Urlaub zurück ist (ab 15.5.). Klaus klärt mit dem Legal-Team die Datenschutz-Frage zu den neuen Webhook-URLs.
+
+Standup notes: Marcus will fix the staging deploy issue today. Priya is going to write the migration script and have it reviewed by Wednesday. The team agreed to defer the dashboard refactor until next sprint. We still need to decide on the new linter — let's do that async on Slack by Friday.
+
+call mom

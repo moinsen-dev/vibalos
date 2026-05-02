@@ -1,0 +1,7 @@
+# Friendlier Email — rewrite a draft as a clear friendly email
+
+Hi, brauchen die Liste der offenen tickets bis Donnerstag. Bis dahin keine excuses.
+
+Hey Sarah, the deployment broke staging again because someone bypassed the CI check. Need to know who and when so we can plug the hole. Asap please.
+
+absage termin morgen

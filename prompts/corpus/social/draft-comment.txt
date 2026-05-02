@@ -1,0 +1,7 @@
+# Draft Comment — write a concise reply to a social post
+
+Original post: "Manche Devs nutzen heute noch keine LSPs und ich verstehe es nicht — verbringt ihr ernsthaft Zeit damit, Imports manuell zu schreiben?" → reply
+
+Original post by Anya Vasilenko: "Hot take: every meeting under 30 minutes should be a Slack message instead. Calendar bloat is a productivity killer." → reply
+
+post says "thoughts?"

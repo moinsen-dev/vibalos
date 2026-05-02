@@ -1,0 +1,13 @@
+# Polish with Claude Code context — sharpen a follow-up prompt using recent assistant replies
+
+# Note: this preset uses {{cc_recent_assistant_all}} which the eval harness
+# leaves empty (no Claude Code session is mocked). Outputs will still
+# show whether the model handles the user's prompt and structure
+# correctly, but the "context-aware" angle won't be tested. That's OK
+# for a baseline pass — context handling needs an integration test later.
+
+okay jetzt füg auch noch tests dazu
+
+now also handle the empty input case
+
+und make it dark mode

@@ -1,0 +1,7 @@
+# Hook Paragraph — 3-5 sentences, concrete observation/tension/stake, no throat-clearing
+
+Topic: Wie wir bei einer kleinen Agentur in 12 Monaten von 3 auf 12 Mitarbeiter gewachsen sind — und welche Fehler wir dabei gemacht haben
+
+Topic: Why most internal tooling teams produce shadow infrastructure that haunts companies for years
+
+Topic: pricing

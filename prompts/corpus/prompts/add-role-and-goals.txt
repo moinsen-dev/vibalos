@@ -1,0 +1,7 @@
+# Add Role and Goals — augment a prompt with assistant role + goal + success criteria
+
+Schreib mir bitte einen Prompt, der bei einem Code-Review hilft. Soll auf Performance achten und auf Sicherheit, am besten in mehreren Sprachen einsetzbar.
+
+Help me write a prompt for an AI to summarize legal contracts and extract key clauses, deadlines, and parties involved.
+
+write a prompt that does X

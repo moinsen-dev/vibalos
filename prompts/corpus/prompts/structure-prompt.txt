@@ -1,0 +1,7 @@
+# Structure Prompt — convert messy text into a clean actionable prompt
+
+ich brauche ein script das alle bilder im ordner kleiner macht aber transparente png erkennt und gleich behandelt, hauptsächlich für unsere produktseite, max 800px breit oder so, achja qualität soll gut bleiben
+
+build me a chatbot that can answer customer questions about our shipping policy and returns, should integrate with our zendesk, fall back to human if confidence too low
+
+migrate database

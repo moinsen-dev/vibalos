@@ -1,0 +1,16 @@
+# Bullets to Prose — convert bullets into a flowing paragraph
+
+- Q3 Umsatz: 2.1M EUR (+18% QoQ)
+- Neukunden: 47, davon 12 Enterprise
+- Churn-Rate: 3.2% (Vorquartal: 4.8%)
+- Top-Reklamationsgrund: Onboarding-Komplexität
+- Plan Q4: Onboarding-Redesign + neuer SDR
+
+- Released v2.0 with the new dashboard layout
+- Migrated 80% of customers within 4 weeks, ahead of plan
+- One critical bug surfaced post-launch, hotfixed within 2 hours
+- Customer feedback overwhelmingly positive, NPS climbed from 41 to 54
+- Two senior engineers left during the migration, knowledge transfer ongoing
+
+- a
+- b

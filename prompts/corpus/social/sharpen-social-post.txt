@@ -1,0 +1,7 @@
+# Sharpen Social Post — rewrite a draft as a concise social post
+
+So, ich habe heute echt eine spannende Sache entdeckt, weil unser neues Feature ist endlich live und ich glaube wirklich, dass es einen Unterschied machen wird für unsere User, die schon lange darauf gewartet haben, dass wir das Problem mit den langen Wartezeiten endlich lösen.
+
+I just realized that most teams are spending way too much time on standup meetings when async updates would work just fine for 80% of the content, and the remaining 20% deserves a real conversation, not a status report. Honestly this is something we should all be thinking about more.
+
+new product launched

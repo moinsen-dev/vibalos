@@ -1,0 +1,7 @@
+## Summarize Briefly — turn a long verbose prompt into a concise prompt brief
+
+Du bist ein erfahrener Vollzeit-Personalmanager mit Spezialisierung auf strategisches Recruiting, der den globalen Talentmarkt seit über 15 Jahren intensiv beobachtet und sowohl in Konzernen als auch Startups gearbeitet hat. Deine Aufgabe ist es, mir bei der Erstellung einer komplett überarbeiteten, modernen, ansprechenden, inklusiven, conversion-optimierten Stellenanzeige für eine Senior-Backend-Engineer-Position in unserem schnell wachsenden FinTech-Unternehmen zu helfen, wobei wir besonders auf Diversity, Equity, Inclusion achten und gleichzeitig technische Exzellenz, Team-Fit, kulturelle Passung und Wachstumsorientierung adressieren wollen, also bitte schreib mir was Tolles.
+
+You are a senior product manager at a SaaS company with extensive experience in B2B sales enablement tools. The user is asking you to design, plan, scope, prioritize, and create a detailed product roadmap for the next 4 quarters covering all stages of the customer journey from acquisition through retention, including discovery activities, customer interviews, MVP scoping, beta program, GTM strategy, pricing experiments, expansion playbook, and churn reduction. Please provide a comprehensive and detailed roadmap with specific dates, ownership, dependencies, and KPIs.
+
+a

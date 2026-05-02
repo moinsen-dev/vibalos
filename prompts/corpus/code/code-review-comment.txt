@@ -1,0 +1,20 @@
+# Code Review Comment — write a constructive, specific review comment
+
+```swift
+func loadUser(id: String) async -> User? {
+    let url = URL(string: "https://api.example.com/users/\(id)")!
+    let (data, _) = try! await URLSession.shared.data(from: url)
+    return try? JSONDecoder().decode(User.self, from: data)
+}
+```
+
+```python
+def process_orders(orders):
+    for order in orders:
+        if order.status == "pending":
+            send_email(order.user_email)
+            order.status = "processed"
+            db.save(order)
+```
+
+return null;

@@ -1,0 +1,7 @@
+# Write Memory Entry — convert user note into a structured Claude Code memory file (frontmatter + body)
+
+uli ist senior data engineer und arbeitet seit zehn jahren mit airflow, kafka und dbt; aktuell baut er die analytics-pipeline für ein fintech-startup neu auf
+
+weekly merge freeze starts every Thursday at 5pm because the mobile team cuts release branches Friday morning
+
+linear project ID for pipeline bugs

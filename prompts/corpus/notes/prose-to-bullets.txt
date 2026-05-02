@@ -1,0 +1,7 @@
+# Prose to Bullets — convert prose into a tight bullet list
+
+Wir haben heute morgen zusammen mit dem Vertrieb einen Workshop gemacht und sind dabei zu einigen wichtigen Erkenntnissen gekommen, die wir festhalten sollten. Erstens: die meisten Leads kommen aktuell über LinkedIn und nicht über die Webseite, was unsere ganze Content-Strategie eigentlich in Frage stellt. Zweitens: die Conversion vom MQL zum SQL liegt bei nur 12 Prozent, das ist deutlich unter Branchenschnitt. Drittens: unsere Sales-Cycle ist von 60 auf 90 Tage gestiegen, vermutlich weil wir mit größeren Accounts arbeiten. Wir müssen das ganze nochmal mit dem CMO durchsprechen.
+
+The product team identified three blockers in this sprint that need to be addressed before we can ship the new pricing tier: the billing service still uses the old Stripe SDK that doesn't support metered billing, the admin panel doesn't have a way to grant trial extensions, and there's no notification system for usage limits being approached. The team estimates two weeks of work to clear these blockers, assuming no further surprises.
+
+Es regnet.

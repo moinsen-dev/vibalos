@@ -1,0 +1,7 @@
+# Plain Language — rewrite at ~B1 reading level, short sentences, no jargon
+
+Aufgrund der Implementierung der neuen DSGVO-konformen Datenverarbeitungsrichtlinien müssen alle Kundeninteraktionen, die im Rahmen unserer Customer-Success-Aktivitäten stattfinden, fortan einer doppelten Verifikation unterzogen werden, bevor personenbezogene Daten in unsere Analyseplattform übertragen werden dürfen.
+
+Pursuant to the recently ratified amendments to our service-level agreement, all instances of degraded performance exceeding the contractually delineated thresholds shall henceforth be subject to a remediation protocol involving cross-functional incident response teams convened within a 30-minute aperture from initial detection.
+
+Lol das ist krass.

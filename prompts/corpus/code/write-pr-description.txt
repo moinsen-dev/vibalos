@@ -1,0 +1,11 @@
+# Write PR Description — turn commit list / notes into ## Summary + ## Test plan
+
+Commits in this branch:
+- add OllamaStreamParser
+- wire OllamaClient.generateStream(..) using URLSession.bytes
+- update PromptRenderer tests for streaming path
+- bump test count from 142 → 148
+
+This PR migrates our authentication middleware from express-session to a custom JWT-based solution. We move from server-side sessions to stateless tokens to scale across multiple regions, fix the cookie-domain bug that was breaking single sign-on across subdomains, and remove the Redis session-store dependency. New refresh-token rotation logic with a sliding 7-day window. Existing endpoints are unchanged.
+
+added a button

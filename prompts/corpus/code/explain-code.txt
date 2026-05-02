@@ -1,0 +1,22 @@
+# Explain Code — 2-3 plain sentences suitable as inline comment / docstring
+
+func debounce(_ interval: TimeInterval, action: @escaping () -> Void) -> () -> Void {
+    var workItem: DispatchWorkItem?
+    return {
+        workItem?.cancel()
+        let item = DispatchWorkItem(block: action)
+        workItem = item
+        DispatchQueue.main.asyncAfter(deadline: .now() + interval, execute: item)
+    }
+}
+
+def memoize(fn):
+    cache = {}
+    def wrapper(*args, **kwargs):
+        key = (args, frozenset(kwargs.items()))
+        if key not in cache:
+            cache[key] = fn(*args, **kwargs)
+        return cache[key]
+    return wrapper
+
+x = y + 1
